@@ -1,4 +1,4 @@
-; Sun Dec 03 20:02:02 CET 2017
+; Mon Dec 11 16:46:35 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -7,6 +7,11 @@
 (defclass %3ACLIPS_TOP_LEVEL_SLOT_CLASS "Fake class to save top-level slot information"
 	(is-a USER)
 	(role abstract)
+	(single-slot aireAcondicionado
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot distrito
 		(type STRING)
 ;+		(cardinality 0 1)
@@ -14,6 +19,11 @@
 	(single-slot amueblada
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot soleado
+		(type INSTANCE)
+;+		(allowed-classes Soleado)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot balcon
@@ -27,6 +37,11 @@
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot mascotasPermitidas
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot piscina
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
@@ -45,9 +60,9 @@
 		(range 0.0 %3FVARIABLE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot coordY
-		(type FLOAT)
-		(range 0.0 10000.0)
+	(single-slot vistas
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(multislot dormitorios
@@ -63,13 +78,22 @@
 		(range 1 %3FVARIABLE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot piso
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot otrasCaracteristicas
 		(type INSTANCE)
 ;+		(allowed-classes OtrasCaracteristicas)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot piso
-		(type STRING)
+	(single-slot latitud
+		(type FLOAT)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot calefaccion
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot electrodomesticos
@@ -82,9 +106,22 @@
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot coordX
+	(single-slot garaje
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot tarde
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot longitud
 		(type FLOAT)
-		(range 0.0 10000.0)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot ma%C3%B1ana
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
 
@@ -116,14 +153,14 @@
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(multislot dormitorios
+		(type INSTANCE)
+;+		(allowed-classes Dormitorio)
+		(create-accessor read-write))
 	(single-slot terraza
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
-		(create-accessor read-write))
-	(multislot dormitorios
-		(type INSTANCE)
-;+		(allowed-classes Dormitorio)
 		(create-accessor read-write))
 	(single-slot otrasCaracteristicas
 		(type INSTANCE)
@@ -162,11 +199,6 @@
 (defclass Localizacion
 	(is-a USER)
 	(role concrete)
-	(single-slot coordY
-		(type FLOAT)
-		(range 0.0 10000.0)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot calle
 		(type STRING)
 ;+		(cardinality 0 1)
@@ -175,14 +207,17 @@
 		(type STRING)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot coordX
-		(type FLOAT)
-		(range 0.0 10000.0)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot numero
 		(type INTEGER)
 		(range 1 %3FVARIABLE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot latitud
+		(type FLOAT)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot longitud
+		(type FLOAT)
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
 
@@ -198,8 +233,51 @@
 (defclass OtrasCaracteristicas
 	(is-a USER)
 	(role concrete)
+	(single-slot piscina
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot aireAcondicionado
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot mascotasPermitidas
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot vistas
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot calefaccion
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot soleado
+		(type INSTANCE)
+;+		(allowed-classes Soleado)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot garaje
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Soleado
+	(is-a USER)
+	(role concrete)
+	(single-slot ma%C3%B1ana
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot tarde
+		(type STRING)
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))

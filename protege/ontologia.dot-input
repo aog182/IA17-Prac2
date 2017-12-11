@@ -1,0 +1,15 @@
+digraph "ontologia" {
+
+"Localizacion" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Localizacion|{coordY|Float}|{calle|String}|{distrito|String}|{coordX|Float}|{numero|Integer}}"]
+"Duplex" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Duplex|{puerta|String}|{piso|String}}"]
+"Vivienda"->"Duplex" [dir=back, label=isa, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0"]
+"Unifamiliar" [shape=box, label="Unifamiliar", color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0"]
+"Vivienda"->"Unifamiliar" [dir=back, label=isa, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0"]
+"Piso" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Piso|{puerta|String}|{piso|String}}"]
+"Vivienda"->"Piso" [dir=back, label=isa, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0"]
+"Dormitorio" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Dormitorio|{tipoDormitorio|Symbol|{Simple|Doble}}}"]
+"OtrasCaracteristicas" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{OtrasCaracteristicas|{mascotasPermitidas|Boolean}}"]
+"Vivienda" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Vivienda|{precio|Float}|{balcon|Boolean}|{superficie|Integer}|{electrodomesticos|Boolean}|{amueblada|Boolean}|{...}}"]
+"Vivienda"->"Dormitorio" [style=filled, label="dormitorios*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Vivienda"->"OtrasCaracteristicas" [style=filled, label="otrasCaracteristicas", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+}
