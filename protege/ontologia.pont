@@ -1,4 +1,4 @@
-; Mon Dec 11 16:46:35 CET 2017
+; Tue Dec 12 17:16:41 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -16,14 +16,19 @@
 		(type STRING)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot tipoServicio
+		(type SYMBOL)
+		(allowed-values paradaMetro paradaBus centroComercial supermercado hipermercado colegio centroSalud zonaVerde ocioNocturno estadioDeportes gimnasio biblioteca)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot amueblada
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot soleado
-		(type INSTANCE)
-;+		(allowed-classes Soleado)
+		(type SYMBOL)
+		(allowed-values ma%C3%B1ana tarde diaCompleto)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot balcon
@@ -119,6 +124,11 @@
 		(type FLOAT)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot localizacion
+		(type INSTANCE)
+;+		(allowed-classes Localizacion)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot ma%C3%B1ana
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
@@ -131,6 +141,11 @@
 	(single-slot precio
 		(type FLOAT)
 		(range 0.0 %3FVARIABLE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot localizacion
+		(type INSTANCE)
+;+		(allowed-classes Localizacion)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot balcon
@@ -259,8 +274,8 @@
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot soleado
-		(type INSTANCE)
-;+		(allowed-classes Soleado)
+		(type SYMBOL)
+		(allowed-values ma%C3%B1ana tarde diaCompleto)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot garaje
@@ -269,15 +284,16 @@
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
 
-(defclass Soleado
+(defclass Servicio
 	(is-a USER)
 	(role concrete)
-	(single-slot ma%C3%B1ana
-		(type SYMBOL)
-		(allowed-values FALSE TRUE)
+	(single-slot localizacion
+		(type INSTANCE)
+;+		(allowed-classes Localizacion)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot tarde
-		(type STRING)
+	(single-slot tipoServicio
+		(type SYMBOL)
+		(allowed-values paradaMetro paradaBus centroComercial supermercado hipermercado colegio centroSalud zonaVerde ocioNocturno estadioDeportes gimnasio biblioteca)
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
