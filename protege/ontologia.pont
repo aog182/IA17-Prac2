@@ -1,4 +1,4 @@
-; Wed Dec 13 14:01:36 CET 2017
+; Wed Dec 13 16:39:00 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -87,7 +87,7 @@
 		(create-accessor read-write))
 	(single-slot tipoDormitorio
 		(type SYMBOL)
-		(allowed-values Simple Doble)
+		(allowed-values simple doble)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot edad
@@ -115,6 +115,10 @@
 		(create-accessor read-write))
 	(single-slot hijos
 		(type INTEGER)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot identificacion
+		(type STRING)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot puerta
@@ -176,11 +180,6 @@
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot importante
-		(type SYMBOL)
-		(allowed-values FALSE TRUE)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot terraza
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
@@ -220,7 +219,7 @@
 		(create-accessor read-write))
 	(single-slot cercania
 		(type SYMBOL)
-		(allowed-values cerca mediaDistancia)
+		(allowed-values cerca mediaDistancia lejos)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(multislot caracteristicasDestacables
@@ -337,7 +336,7 @@
 	(role concrete)
 	(single-slot tipoDormitorio
 		(type SYMBOL)
-		(allowed-values Simple Doble)
+		(allowed-values simple doble)
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
 
@@ -399,6 +398,10 @@
 	(role concrete)
 	(multislot edades
 		(type INTEGER)
+		(create-accessor read-write))
+	(single-slot identificacion
+		(type STRING)
+;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(multislot recomendaciones
 		(type INSTANCE)
@@ -473,12 +476,7 @@
 
 (defclass Restriccion
 	(is-a USER)
-	(role concrete)
-	(single-slot importante
-		(type SYMBOL)
-		(allowed-values FALSE TRUE)
-;+		(cardinality 0 1)
-		(create-accessor read-write)))
+	(role concrete))
 
 (defclass RestriccionPrecio
 	(is-a Restriccion)
@@ -508,14 +506,14 @@
 (defclass RestriccionCercania
 	(is-a Restriccion)
 	(role concrete)
-	(single-slot servicio
-		(type INSTANCE)
-;+		(allowed-classes Servicio)
+	(single-slot tipoServicio
+		(type SYMBOL)
+		(allowed-values paradaMetro paradaBus centroComercial supermercado hipermercado colegio centroSalud zonaVerde ocioNocturno estadioDeportes gimnasio biblioteca)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot cercania
 		(type SYMBOL)
-		(allowed-values cerca mediaDistancia)
+		(allowed-values cerca mediaDistancia lejos)
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
 

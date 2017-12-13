@@ -1,4 +1,252 @@
-; Wed Dec 13 14:01:36 CET 2017
+; Wed Dec 13 16:39:00 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
+
+([ontologia_Class25] of  ParejaSinHijos
+
+	(coche FALSE)
+	(edades 28 27)
+	(identificacion "parejaSinHijos1")
+	(lugarTrabajaEstudia [ontologia_Class26])
+	(preferencias
+		[ontologia_Class28]
+		[ontologia_Class32]
+		[ontologia_Class35]
+		[ontologia_Class31]
+		[ontologia_Class52]
+		[ontologia_Class59])
+	(preferenciaTransportePublico TRUE)
+	(trabajaEstudiaEnCiudad TRUE))
+
+([ontologia_Class26] of  Localizacion
+
+	(calle "Mallorca")
+	(latitud 41.38339)
+	(longitud 2.1487427)
+	(numero 42))
+
+([ontologia_Class28] of  RestriccionCaracteristicas
+
+	(dormitoriosDeseados [ontologia_Class29]))
+
+([ontologia_Class29] of  Dormitorio
+
+	(tipoDormitorio doble))
+
+([ontologia_Class30] of  Dormitorio
+
+	(tipoDormitorio simple))
+
+([ontologia_Class31] of  RestriccionPrecio
+
+	(precioMax 700.0)
+	(precioMaxEstricto TRUE)
+	(precioMin 0.0))
+
+([ontologia_Class32] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio paradaMetro))
+
+([ontologia_Class35] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio supermercado))
+
+([ontologia_Class36] of  ParejaHijosFuturo
+
+	(coche TRUE)
+	(edades 31 26)
+	(identificacion "parejaHijosFuturo1")
+	(preferencias
+		[ontologia_Class28]
+		[ontologia_Class38]
+		[ontologia_Class32]
+		[ontologia_Class65]
+		[ontologia_Class50]
+		[ontologia_Class49])
+	(preferenciaTransportePublico TRUE))
+
+([ontologia_Class38] of  RestriccionCaracteristicas
+
+	(dormitoriosDeseados [ontologia_Class30]))
+
+([ontologia_Class39] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio paradaBus))
+
+([ontologia_Class40] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio centroComercial))
+
+([ontologia_Class42] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio supermercado))
+
+([ontologia_Class43] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio hipermercado))
+
+([ontologia_Class44] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio colegio))
+
+([ontologia_Class45] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio centroSalud))
+
+([ontologia_Class46] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio paradaMetro))
+
+([ontologia_Class47] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio paradaBus))
+
+([ontologia_Class48] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio centroComercial))
+
+([ontologia_Class49] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio hipermercado))
+
+([ontologia_Class50] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio colegio))
+
+([ontologia_Class51] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio centroSalud))
+
+([ontologia_Class52] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio zonaVerde))
+
+([ontologia_Class53] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio zonaVerde))
+
+([ontologia_Class54] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio ocioNocturno))
+
+([ontologia_Class55] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio ocioNocturno))
+
+([ontologia_Class56] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio estadioDeportes))
+
+([ontologia_Class57] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio estadioDeportes))
+
+([ontologia_Class58] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio gimnasio))
+
+([ontologia_Class59] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio gimnasio))
+
+([ontologia_Class60] of  RestriccionCercania
+
+	(cercania cerca)
+	(tipoServicio biblioteca))
+
+([ontologia_Class61] of  RestriccionCercania
+
+	(cercania mediaDistancia)
+	(tipoServicio biblioteca))
+
+([ontologia_Class62] of  RestriccionCercania
+
+	(cercania lejos)
+	(tipoServicio centroComercial))
+
+([ontologia_Class63] of  RestriccionCercania
+
+	(cercania lejos)
+	(tipoServicio hipermercado))
+
+([ontologia_Class64] of  RestriccionCercania
+
+	(cercania lejos)
+	(tipoServicio colegio))
+
+([ontologia_Class65] of  RestriccionCercania
+
+	(cercania lejos)
+	(tipoServicio ocioNocturno))
+
+([ontologia_Class66] of  RestriccionCercania
+
+	(cercania lejos)
+	(tipoServicio estadioDeportes))
+
+([ontologia_Class68] of  RestriccionPrecio
+
+	(precioMax 1200.0)
+	(precioMaxEstricto TRUE)
+	(precioMin 0.0))
+
+([ontologia_Class69] of  RestriccionPrecio
+
+	(precioMax 1400.0)
+	(precioMin 400.0))
+
+([ontologia_Class70] of  RestriccionPrecio
+
+	(precioMax 750.0)
+	(precioMaxEstricto FALSE)
+	(precioMin 0.0))
+
+([ontologia_Class72] of  Familia
+
+	(ancianosACargo 0)
+	(coche TRUE)
+	(edades 45 45 6 14)
+	(hijos 2)
+	(identificacion "familia1")
+	(lugarTrabajaEstudia [ontologia_Class73])
+	(preferencias
+		[ontologia_Class28]
+		[ontologia_Class28]
+		[ontologia_Class48]
+		[ontologia_Class44]
+		[ontologia_Class65]
+		[ontologia_Class39]
+		[ontologia_Class53]
+		[ontologia_Class69])
+	(tipoFamilia biparental)
+	(trabajaEstudiaEnCiudad TRUE))
+
+([ontologia_Class73] of  Localizacion
+
+	(calle "Muntaner")
+	(latitud 41.384277)
+	(longitud 2.162678)
+	(numero 8))
