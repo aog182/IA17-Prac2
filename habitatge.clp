@@ -39,3 +39,20 @@
     (slot precioMaxEstricto (type SYMBOL) (allowed-values TRUE FALSE indef) (default indef))
     (slot precioMin (type FLOAT))
 )
+
+
+;;;------------------------------------------------------------------------------------------------------------------------------------------------------
+;;;----------                    MAIN                           ----------                              MAIN
+;;;------------------------------------------------------------------------------------------------------------------------------------------------------
+
+;;; Modulo principal
+
+(defmodule MAIN (export ?ALL))
+
+(defrule begin "Regla inicial"
+    (initial-fact)
+    =>
+    (printout t crlf)
+    (printout t "-------------- Sistema de recomendacion de viviendas de Barcelona --------------" crlf)
+    (printout t crlf) 
+)
