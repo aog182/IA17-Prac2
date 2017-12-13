@@ -1,4 +1,4 @@
-; Tue Dec 12 17:16:41 CET 2017
+; Wed Dec 13 14:01:36 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -21,6 +21,11 @@
 		(allowed-values paradaMetro paradaBus centroComercial supermercado hipermercado colegio centroSalud zonaVerde ocioNocturno estadioDeportes gimnasio biblioteca)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot coche
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot amueblada
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
@@ -29,6 +34,15 @@
 	(single-slot soleado
 		(type SYMBOL)
 		(allowed-values ma%C3%B1ana tarde diaCompleto)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot dormitoriosDeseados
+		(type INSTANCE)
+;+		(allowed-classes Dormitorio)
+		(create-accessor read-write))
+	(single-slot algunEstudiante
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot balcon
@@ -41,9 +55,29 @@
 		(range 0 %3FVARIABLE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot tipoFamilia
+		(type SYMBOL)
+		(allowed-values monoparental biparental)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot mascotasPermitidas
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot preferencias
+		(type INSTANCE)
+;+		(allowed-classes Restriccion)
+		(create-accessor read-write))
+	(multislot edades
+		(type INTEGER)
+		(create-accessor read-write))
+	(multislot recomendaciones
+		(type INSTANCE)
+;+		(allowed-classes Vivienda)
+		(create-accessor read-write))
+	(single-slot calle
+		(type STRING)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot piscina
@@ -51,13 +85,18 @@
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot calle
-		(type STRING)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot tipoDormitorio
 		(type SYMBOL)
 		(allowed-values Simple Doble)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot edad
+		(type INTEGER)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot trabajaEstudiaEnCiudad
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot precio
@@ -74,8 +113,21 @@
 		(type INSTANCE)
 ;+		(allowed-classes Dormitorio)
 		(create-accessor read-write))
+	(single-slot hijos
+		(type INTEGER)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot puerta
 		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot precioMaxEstricto
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot numeroPersonas
+		(type INTEGER)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot numero
@@ -83,8 +135,8 @@
 		(range 1 %3FVARIABLE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot piso
-		(type STRING)
+	(single-slot latitud
+		(type FLOAT)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot otrasCaracteristicas
@@ -92,8 +144,31 @@
 ;+		(allowed-classes OtrasCaracteristicas)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot latitud
-		(type FLOAT)
+	(single-slot piso
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot preferenciaTransportePublico
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot criteriosNoCumplidos
+		(type INSTANCE)
+;+		(allowed-classes Restriccion)
+		(create-accessor read-write))
+	(single-slot lugarTrabajaEstudia
+		(type INSTANCE)
+;+		(allowed-classes Localizacion)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot ancianosACargo
+		(type INTEGER)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot electrodomesticos
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot calefaccion
@@ -101,7 +176,7 @@
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot electrodomesticos
+	(single-slot importante
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
@@ -116,36 +191,57 @@
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot tarde
-		(type STRING)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot longitud
 		(type FLOAT)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot tarde
+		(type STRING)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot localizacion
 		(type INSTANCE)
 ;+		(allowed-classes Localizacion)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot servicio
+		(type INSTANCE)
+;+		(allowed-classes Servicio)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot precioMin
+		(type FLOAT)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot ma%C3%B1ana
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot cercania
+		(type SYMBOL)
+		(allowed-values cerca mediaDistancia)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot caracteristicasDestacables
+		(type STRING)
+		(create-accessor read-write))
+	(single-slot precioMax
+		(type FLOAT)
+;+		(cardinality 0 1)
 		(create-accessor read-write)))
 
 (defclass Vivienda
 	(is-a USER)
 	(role concrete)
-	(single-slot precio
-		(type FLOAT)
-		(range 0.0 %3FVARIABLE)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot localizacion
 		(type INSTANCE)
 ;+		(allowed-classes Localizacion)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot precio
+		(type FLOAT)
+		(range 0.0 %3FVARIABLE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot balcon
@@ -168,14 +264,14 @@
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(multislot dormitorios
-		(type INSTANCE)
-;+		(allowed-classes Dormitorio)
-		(create-accessor read-write))
 	(single-slot terraza
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot dormitorios
+		(type INSTANCE)
+;+		(allowed-classes Dormitorio)
 		(create-accessor read-write))
 	(single-slot otrasCaracteristicas
 		(type INSTANCE)
@@ -263,12 +359,12 @@
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot vistas
+	(single-slot calefaccion
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot calefaccion
+	(single-slot vistas
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
@@ -296,4 +392,152 @@
 		(type SYMBOL)
 		(allowed-values paradaMetro paradaBus centroComercial supermercado hipermercado colegio centroSalud zonaVerde ocioNocturno estadioDeportes gimnasio biblioteca)
 ;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Solicitantes
+	(is-a USER)
+	(role concrete)
+	(multislot edades
+		(type INTEGER)
+		(create-accessor read-write))
+	(multislot recomendaciones
+		(type INSTANCE)
+;+		(allowed-classes Vivienda)
+		(create-accessor read-write))
+	(single-slot coche
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot trabajaEstudiaEnCiudad
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot preferencias
+		(type INSTANCE)
+;+		(allowed-classes Restriccion)
+		(create-accessor read-write))
+	(single-slot preferenciaTransportePublico
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot lugarTrabajaEstudia
+		(type INSTANCE)
+;+		(allowed-classes Localizacion)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass ParejaSinHijos
+	(is-a Solicitantes)
+	(role concrete))
+
+(defclass ParejaHijosFuturo
+	(is-a Solicitantes)
+	(role concrete))
+
+(defclass Familia
+	(is-a Solicitantes)
+	(role concrete)
+	(single-slot ancianosACargo
+		(type INTEGER)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot tipoFamilia
+		(type SYMBOL)
+		(allowed-values monoparental biparental)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot hijos
+		(type INTEGER)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Grupo
+	(is-a Solicitantes)
+	(role concrete)
+	(single-slot numeroPersonas
+		(type INTEGER)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot algunEstudiante
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Individuo
+	(is-a Solicitantes)
+	(role concrete))
+
+(defclass Restriccion
+	(is-a USER)
+	(role concrete)
+	(single-slot importante
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass RestriccionPrecio
+	(is-a Restriccion)
+	(role concrete)
+	(single-slot precioMin
+		(type FLOAT)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot precioMaxEstricto
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot precioMax
+		(type FLOAT)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass RestriccionCaracteristicas
+	(is-a Restriccion)
+	(role concrete)
+	(multislot dormitoriosDeseados
+		(type INSTANCE)
+;+		(allowed-classes Dormitorio)
+		(create-accessor read-write)))
+
+(defclass RestriccionCercania
+	(is-a Restriccion)
+	(role concrete)
+	(single-slot servicio
+		(type INSTANCE)
+;+		(allowed-classes Servicio)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot cercania
+		(type SYMBOL)
+		(allowed-values cerca mediaDistancia)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Recomendacion
+	(is-a USER)
+	(role concrete))
+
+(defclass ParcialmenteAdecuado
+	(is-a Recomendacion)
+	(role concrete)
+	(multislot criteriosNoCumplidos
+		(type INSTANCE)
+;+		(allowed-classes Restriccion)
+		(create-accessor read-write)))
+
+(defclass Adecuado
+	(is-a Recomendacion)
+	(role concrete))
+
+(defclass MuyRecomendable
+	(is-a Recomendacion)
+	(role concrete)
+	(multislot caracteristicasDestacables
+		(type STRING)
 		(create-accessor read-write)))
