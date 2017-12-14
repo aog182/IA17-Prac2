@@ -1,4 +1,4 @@
-; Wed Dec 13 16:39:00 CET 2017
+; Thu Dec 14 13:26:50 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -13,7 +13,8 @@
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot distrito
-		(type STRING)
+		(type SYMBOL)
+		(allowed-values Sureste Noreste Suroeste Noroeste)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot tipoServicio
@@ -104,6 +105,11 @@
 		(range 0.0 %3FVARIABLE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot coordY
+		(type INTEGER)
+		(range 0 10000)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot vistas
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
@@ -122,7 +128,8 @@
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot puerta
-		(type STRING)
+		(type SYMBOL)
+		(allowed-values A B C D E F)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot precioMaxEstricto
@@ -139,17 +146,14 @@
 		(range 1 %3FVARIABLE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot latitud
-		(type FLOAT)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot otrasCaracteristicas
 		(type INSTANCE)
 ;+		(allowed-classes OtrasCaracteristicas)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot piso
-		(type STRING)
+		(type SYMBOL)
+		(allowed-values Bajo 1 2 3 4 5 6 7 8 9 10 Atico)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot preferenciaTransportePublico
@@ -190,10 +194,6 @@
 		(allowed-values FALSE TRUE)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot longitud
-		(type FLOAT)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot tarde
 		(type STRING)
 ;+		(cardinality 0 1)
@@ -215,6 +215,11 @@
 	(single-slot ma%C3%B1ana
 		(type SYMBOL)
 		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot coordX
+		(type INTEGER)
+		(range 0 10000)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot cercania
@@ -282,11 +287,13 @@
 	(is-a Vivienda)
 	(role concrete)
 	(single-slot puerta
-		(type STRING)
+		(type SYMBOL)
+		(allowed-values A B C D E F)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot piso
-		(type STRING)
+		(type SYMBOL)
+		(allowed-values Bajo 1 2 3 4 5 6 7 8 9 10 Atico)
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
 
@@ -294,11 +301,13 @@
 	(is-a Vivienda)
 	(role concrete)
 	(single-slot puerta
-		(type STRING)
+		(type SYMBOL)
+		(allowed-values A B C D E F)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot piso
-		(type STRING)
+		(type SYMBOL)
+		(allowed-values Bajo 1 2 3 4 5 6 7 8 9 10 Atico)
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
 
@@ -309,25 +318,28 @@
 (defclass Localizacion
 	(is-a USER)
 	(role concrete)
+	(single-slot coordY
+		(type INTEGER)
+		(range 0 10000)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot calle
 		(type STRING)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot distrito
-		(type STRING)
+		(type SYMBOL)
+		(allowed-values Sureste Noreste Suroeste Noroeste)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot coordX
+		(type INTEGER)
+		(range 0 10000)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot numero
 		(type INTEGER)
 		(range 1 %3FVARIABLE)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
-	(single-slot latitud
-		(type FLOAT)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
-	(single-slot longitud
-		(type FLOAT)
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
 
