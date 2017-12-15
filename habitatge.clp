@@ -1,3 +1,17 @@
+;;-------------------------------------------------------------------------------------------------------------
+;;-------------------------------------------------------------------------------------------------------------
+;;
+;;                PRACTICA 2 IA: SBC
+;;
+;; Alumnos: Jan Manrique
+;;          Arnau Orriols
+;;          Alex Pla
+;; Cuatrimestre: 2017-18 Q1
+;;
+;;-------------------------------------------------------------------------------------------------------------
+;;-------------------------------------------------------------------------------------------------------------
+
+
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------                   CLASES                          ----------                              CLASES
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1579,27 +1593,17 @@
 ;;;----------  					TEMPLATES					 		---------- 								TEMPLATES
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
+;;; ------------------- INFORMACION --------------------------
+;;; deftemplates para almacenar la informacion de los solicitantes
 
-;;;; ----------------- RESTRICCIONES ------------------------
-
-;;; deftemplates para almacenar las restricciones de los solicitantes
-
-(deftemplate RestriccionesCaracteristicas "Restricciones de las caracteristicas"
-    (multislot dormitoriosDeseados (type INSTANCE) (allowed-classes Dormitorio))
+(deftemplate Solicitantes
+    ***** S'HA D'OMPLIR, DUBTE *****
 )
 
-(deftemplate RestriccionesCercania "Restricciones de cercania"
-    (slot cercania (type SYMBOL) (allowed-values cerca mediaDistancia lejos indef) (default indef))
-    (slot tipoServicio (type SYMBOL) (allowed-values paradaMetro paradaBus centroComercial supermercado hipermercado colegio centroSalud zonaVerde ocioNocturno estadioDeportes gimnasio biblioteca indef) (default indef))
-)
 
-(deftemplate RestriccionesPrecio "Restricciones de precio"
-    (slot precioMax (type FLOAT))
-    (slot precioMaxEstricto (type SYMBOL) (allowed-values TRUE FALSE indef) (default indef))
-    (slot precioMin (type FLOAT))
-)
 
 ;;; ------------------- PREFERENCIAS --------------------------
+;;; deftemplates para almacenar las preferencias de los solicitantes
 
 (deftemplate PreferenciasCaracteristicas "Preferencias de las caracteristicas"
     (multislot dormitoriosDeseados (type INSTANCE) (allowed-classes Dormitorio))
@@ -1616,6 +1620,16 @@
     (slot precioMaxEstricto (type SYMBOL) (allowed-values TRUE FALSE indef) (default indef))
     (slot precioMin (type FLOAT))
 )
+
+
+;;; ------------------- SOLUCION --------------------------
+;;; deftemplate para almacenar la informacion de la solucion final ordenada
+
+(deftemplate solucionOrdenada "solucion final"
+    (slot posicion (type INTEGER))
+    (slot recomendacion (type INSTANCE) (allowed-classes Recomendacion))
+)
+
 
 
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
