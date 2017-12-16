@@ -16,8 +16,7 @@
 ;;;----------                   CLASES                          ----------                              CLASES
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-; Sat Dec 16 19:27:51 CET 2017
+; Sat Dec 16 21:06:55 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -566,13 +565,14 @@
         (create-accessor read-write)))
 
 
+
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------                   INSTANCIAS                          ----------                              INSTANCIAS
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
 (definstances instances
 
-; Sat Dec 16 19:38:32 CET 2017
+; Sat Dec 16 21:06:55 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -584,16 +584,6 @@
     (identificacion "grupo1")
     (lugarTrabajaEstudia [ontologia_Class1])
     (numeroPersonas 3)
-    (preferencias
-        [ontologia_Class70]
-        [ontologia_Class38]
-        [ontologia_Class38]
-        [ontologia_Class38]
-        [ontologia_Class60]
-        [ontologia_Class60]
-        [ontologia_Class54]
-        [ontologia_Class32]
-        [ontologia_Class35])
     (preferenciaTransportePublico TRUE)
     (trabajaEstudiaEnCiudad TRUE))
 
@@ -934,13 +924,7 @@
 
     (coche TRUE)
     (edades 34)
-    (identificacion "individuo1")
-    (preferencias
-        [ontologia_Class28]
-        [ontologia_Class64]
-        [ontologia_Class57]
-        [ontologia_Class55]
-        [ontologia_Class39]))
+    (identificacion "individuo1"))
 
 ([ontologia_Class20000] of  Duplex
 
@@ -964,13 +948,6 @@
     (edades 28 27)
     (identificacion "parejaSinHijos1")
     (lugarTrabajaEstudia [ontologia_Class26])
-    (preferencias
-        [ontologia_Class28]
-        [ontologia_Class32]
-        [ontologia_Class35]
-        [ontologia_Class31]
-        [ontologia_Class52]
-        [ontologia_Class59])
     (preferenciaTransportePublico TRUE)
     (trabajaEstudiaEnCiudad TRUE))
 
@@ -1335,13 +1312,6 @@
     (coche TRUE)
     (edades 31 26)
     (identificacion "parejaHijosFuturo1")
-    (preferencias
-        [ontologia_Class28]
-        [ontologia_Class38]
-        [ontologia_Class32]
-        [ontologia_Class65]
-        [ontologia_Class50]
-        [ontologia_Class49])
     (preferenciaTransportePublico TRUE))
 
 ([ontologia_Class38] of  RestriccionCaracteristicas
@@ -1543,15 +1513,6 @@
     (hijos 2)
     (identificacion "familia1")
     (lugarTrabajaEstudia [ontologia_Class73])
-    (preferencias
-        [ontologia_Class28]
-        [ontologia_Class28]
-        [ontologia_Class48]
-        [ontologia_Class44]
-        [ontologia_Class65]
-        [ontologia_Class39]
-        [ontologia_Class53]
-        [ontologia_Class69])
     (tipoFamilia Biparental)
     (trabajaEstudiaEnCiudad TRUE))
 
@@ -1736,7 +1697,7 @@
     (nuevo_solicitante)
     =>
     (bind ?identificacion (pregunta-general "Identificacion: "))
-    (while (not (any-instancep ((?solicitantes Solicitantes)) (eq (str-compare ?solicitantes:identificacion ?identificacion) 0))) 
+    (while (not (any-instancep ((?solicitantes Solicitantes)) (eq (str-compare ?solicitantes:identificacion ?identificacion) 0)))
         do
             (printout t "No existen unos solicitantes con esta identificacion." crlf)
             (bind ?identificacion (pregunta-general "Identificacion: ")) 
@@ -1758,3 +1719,18 @@
     (import MAIN ?ALL)
     (export ?ALL)
 )
+
+
+
+
+;;;----------------------------------------------------------------------------------------------
+;;;----------               MODULO DE INFERENCIA DE DATOS DE SOLICITANTES              ----------
+;;;----------------------------------------------------------------------------------------------
+
+;; En este modulo se hace la inferencia de la informacion almacenada en el perfil de los solicitantes
+
+(defmodule inferencia
+    (import MAIN ?ALL)  
+    (import hacer_preguntas ?ALL)
+    (export ?ALL)
+) 
