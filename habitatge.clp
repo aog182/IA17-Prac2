@@ -1596,10 +1596,65 @@
 ;;; ------------------- INFORMACION --------------------------
 ;;; deftemplates para almacenar la informacion de los solicitantes
 
-(deftemplate Solicitantes
-    ***** S'HA D'OMPLIR, DUBTE *****
+(deftemplate Familia
+    ;;; slots comunes
+    (slot identificacion (type STRING))
+    (multislot edades (type INTEGER))
+    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
+    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    ;;; slots extra
+    (slot hijos (type INTEGER))
+    (slot ancianosACargo (type INTEGER))
+    (slot tipoFamilia (type SYMBOL) (allowed-values monoparental biparental) (default biparental))
 )
 
+(deftemplate Grupo
+    ;;; slots comunes
+    (slot identificacion (type STRING))
+    (multislot edades (type INTEGER))
+    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
+    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    ;;; slots extra
+    (slot numeroPersonas (type INTEGER))
+    (slot algunEstudiante (type BOOLEAN) (allowed-values TRUE FALSE) (default FALSE))
+)
+
+(deftemplate Individuo
+    ;;; slots comunes
+    (slot identificacion (type STRING))
+    (multislot edades (type INTEGER))
+    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
+    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    ;;; slots extra
+)
+
+(deftemplate ParejaHijosFuturo
+    ;;; slots comunes
+    (slot identificacion (type STRING))
+    (multislot edades (type INTEGER))
+    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
+    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    ;;; slots extra
+)
+
+(deftemplate ParejaSinHijos
+    ;;; slots comunes
+    (slot identificacion (type STRING))
+    (multislot edades (type INTEGER))
+    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
+    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    ;;; slots extra
+)
 
 
 ;;; ------------------- PREFERENCIAS --------------------------
