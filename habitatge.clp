@@ -1699,6 +1699,22 @@
     (initial-fact)
     =>
     (printout t crlf)
-    (printout t "-------------- Sistema de recomendacion de viviendas de Barcelona --------------" crlf)
-    (printout t crlf) 
+    (printout t "-------------------------------------------------------------------" crlf)
+    (printout t "-------------- Sistema de recomendacion de viviendas --------------" crlf)
+    (printout t "-------------------------------------------------------------------" crlf)
+    (printout t crlf)
+    (assert (nuevo_solicitante))
+)
+
+(defrule existe_solicitante "regla para saber si los solicitantes estan instanciados en el sistema"
+    (nuevo_solicitante)
+    =>
+    (bind ?identificacion (pregunta-general "Identificacion: "))
+    (while (not (any-instancep ((?solicitantes Solicitantes)) (eq (str-compare ?solicitante:identificacion ?identificacion) 0))) 
+        do
+            (printout t "No existen unos solicitantes con esta identificacion." crlf)
+            (bind ?identificacion (pregunta-general "Identificacion: ")) 
+    ) 
+    (assert (Solicitantes ?identificacion))   
+    (focus hacer_preguntas)
 )
