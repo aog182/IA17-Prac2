@@ -572,7 +572,7 @@
 
 (definstances instances
 
-; Sat Dec 16 19:27:51 CET 2017
+; Sat Dec 16 19:38:32 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -1552,7 +1552,7 @@
         [ontologia_Class39]
         [ontologia_Class53]
         [ontologia_Class69])
-    (tipoFamilia biparental)
+    (tipoFamilia Biparental)
     (trabajaEstudiaEnCiudad TRUE))
 
 ([ontologia_Class73] of  Localizacion
@@ -1578,7 +1578,6 @@
     (mascotasPermitidas TRUE)
     (soleado diaCompleto)
     (vistas FALSE))
-
 
 )
 
