@@ -1636,11 +1636,14 @@
 )
 
 ;;; Funcion para hacer una pregunta con un conjunto definido de valores de repuesta    
-(deffunction pregunta-lista (?pregunta $?valores_posibles) 
-    (format t "%s" ?pregunta)  
-    (bind ?resposta (readline))  
-    (bind ?res (str-explode ?resposta))   
-    ?res
+(deffunction pregunta-opciones (?pregunta $?valores_posibles)
+    (format t "%s" ?pregunta)
+    (bind ?respuesta (read))
+    (while (not (member ?respuesta ?valores_posibles)) do
+        (format t "%s" ?pregunta)
+        (bind ?respuesta (read))
+    )
+    ?respuesta
 )
 
 
@@ -1698,7 +1701,6 @@
     (assert(PreferenciasCercania))
 )
 
-
 (defrule preguntarDormitorios "regla para saber cuantos dormitorios desea el solicitante"
     (nuevo_solicitante)
     ?pC <- (PreferenciasCaracteristicas)
@@ -1716,6 +1718,30 @@
     (modify ?pC (dormitoriosDeseados ?pCD))
     (assert (dormitorios_introducido))
 )
+
+(defrule preguntarPrecio "regla para saber el rango de precio deseado"
+    (nuevo_solicitante)
+    ?pP <- (PreferenciasPrecio)
+    (not (precio_introducido))
+    (dormitorios_introducido)
+    =>
+    (bind ?rs (pregunta-numerica-general "¿Cual es su limite superior de precio?:"))
+    (bind ?rse (pregunta-opciones "¿Es este limite estricto, o podria pagar algo mas si la oferta merece la pena? [(1)Estricto-(2)No estricto]:" 1 2))
+    (bind ?ri ?rs)
+    (while (> ?ri ?rs) do 
+        (bind ?ri (pregunta-numerica-general "¿Cual es su limite inferior de precio?:"))
+    )
+    (modify ?pP (precioMax ?rs) (precioMaxEstricto ?rse) (precioMin ?ri))
+    (assert (precio_introducido))
+)
+
+
+
+
+
+
+
+
 
 
 
@@ -1778,23 +1804,6 @@
     (modify ?st (numeroPersonas ?np) (algunEstudiante ?ae))
     (assert (info_extra))
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 (defrule fininferencia "regla para pasar al modulo siguiente"
       (nuevo_solicitante)
