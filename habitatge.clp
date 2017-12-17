@@ -16,7 +16,7 @@
 ;;;----------                   CLASES                          ----------                              CLASES
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
-; Sun Dec 17 16:38:37 CET 2017
+; Sun Dec 17 19:46:26 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -295,7 +295,11 @@
 ;+      (cardinality 0 1)
         (create-accessor read-write)))
 
-(defclass Piso
+(defclass Unifamiliar
+    (is-a Vivienda)
+    (role concrete))
+
+(defclass ViviendaBloque
     (is-a Vivienda)
     (role concrete)
     (single-slot puerta
@@ -310,21 +314,11 @@
         (create-accessor read-write)))
 
 (defclass Duplex
-    (is-a Vivienda)
-    (role concrete)
-    (single-slot puerta
-        (type SYMBOL)
-        (allowed-values A B C D E F)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
-    (single-slot piso
-        (type SYMBOL)
-        (allowed-values Bajo Primero Segundo Tercero Cuarto Quinto Sexto Septimo Octavo Noveno Decimo Atico)
-;+      (cardinality 0 1)
-        (create-accessor read-write)))
+    (is-a ViviendaBloque)
+    (role concrete))
 
-(defclass Unifamiliar
-    (is-a Vivienda)
+(defclass Piso
+    (is-a ViviendaBloque)
     (role concrete))
 
 (defclass Localizacion
@@ -575,7 +569,7 @@
 
 (definstances instances
 
-; Sun Dec 17 16:33:20 CET 2017
+; Sun Dec 17 19:46:26 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -1568,7 +1562,7 @@
     ;;; slots extra
     (slot hijos (type INTEGER))
     (slot ancianosACargo (type INTEGER))
-    (slot tipoFamilia (type SYMBOL) (allowed-values monoparental biparental Indef) (default Indef))
+    (slot tipoFamilia (type SYMBOL) (allowed-values Monoparental Biparental Indef) (default Indef))
     (slot numeroPersonas (type INTEGER))
     (slot algunEstudiante (type SYMBOL) (allowed-values TRUE FALSE Indef) (default Indef))
 )
@@ -1578,19 +1572,20 @@
 ;;; deftemplates para almacenar las preferencias de los solicitantes
 
 (deftemplate PreferenciasCaracteristicas "Preferencias de las caracteristicas"
-    (multislot dormitoriosDeseados (type SYMBOL) (allowed-values Doble Simple))
+    (slot dormitoriosDoblesDeseados (type INTEGER))
+    (slot dormitoriosSimplesDeseados (type INTEGER))
     (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE indef) (default indef))
-)
-
-(deftemplate PreferenciasCercania "Preferencias de cercania"
-    (slot cercania (type SYMBOL) (allowed-values cerca mediaDistancia lejos indef) (default indef))
-    (slot tipoServicio (type SYMBOL) (allowed-values paradaMetro paradaBus centroComercial supermercado hipermercado colegio centroSalud zonaVerde ocioNocturno estadioDeportes gimnasio biblioteca indef) (default indef))
 )
 
 (deftemplate PreferenciasPrecio "Preferencias de precio"
     (slot precioMax (type FLOAT))
     (slot precioMaxEstricto (type SYMBOL) (allowed-values TRUE FALSE indef) (default indef))
     (slot precioMin (type FLOAT))
+)
+
+(deftemplate PreferenciasCercania "Preferencia de cercania"
+    (slot cercania (type SYMBOL) (allowed-values cerca mediaDistancia lejos indef) (default indef))
+    (slot tipoServicio (type SYMBOL) (allowed-values paradaMetro paradaBus centroComercial supermercado hipermercado colegio centroSalud zonaVerde ocioNocturno estadioDeportes gimnasio biblioteca indef) (default indef))
 )
 
 
@@ -1645,6 +1640,27 @@
     )
     ?respuesta
 )
+
+;;; Funcion para hacer una pregunta con un respuesta multiple de conjunto definido de valores de repuesta    
+(deffunction pregunta-lista (?pregunta $?valores_posibles) 
+    (bind ?error TRUE)
+    (while (eq ?error TRUE) do
+        (format t "%s" ?pregunta) 
+        (bind ?respuesta (readline))  
+        (bind ?res (str-explode ?respuesta))
+        (bind ?error FALSE)
+        (bind ?i 1)
+        (while (and (eq ?error FALSE) (<= ?i (length$ ?res))) do
+            (if (not (member (nth$ ?i ?res) ?valores_posibles)) then
+                (bind ?error TRUE)
+            )
+            (bind ?i (+ ?i 1))
+        )
+    )
+    ?res
+)
+
+
 
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------  					MENSAJES					 		---------- 								MENSAJES
@@ -1744,22 +1760,15 @@
     =>
     (bind ?rd (pregunta-numerica-general "¿Cuantos dormitorios dobles desea?:"))
     (bind ?rs (pregunta-numerica-general "¿Cuantos dormitorios simples desea?:"))
-    (bind ?pCD (create$))
-    (loop-for-count (?i 1 ?rd) do
-        (bind ?pCD (insert$ ?pCD ?i Doble))
-    )
-    (loop-for-count (?i (+ ?rd 1) (+ ?rd ?rs)) do
-        (bind ?pCD (insert$ ?pCD ?i Simple))
-    )
-    (modify ?pC (dormitoriosDeseados ?pCD))
+    (modify ?pC (dormitoriosDoblesDeseados ?rd) (dormitoriosSimplesDeseados ?rs))
     (assert (dormitorios_introducido))
 )
 
 (defrule preguntarPrecio "regla para saber el rango de precio deseado"
     (nuevo_solicitante)
     ?pP <- (PreferenciasPrecio)
-    (not (precio_introducido))
     (dormitorios_introducido)
+    (not (precio_introducido))
     =>
     (bind ?rs (pregunta-numerica-general "¿Cual es su limite superior de precio?:"))
     (bind ?rse (pregunta-opciones "¿Es este limite estricto, o podria pagar algo mas si la oferta merece la pena? [(1)Estricto-(2)No estricto]:" 1 2))
@@ -1768,8 +1777,123 @@
         (bind ?ri (pregunta-numerica-general "¿Cual es su limite inferior de precio?:"))
     )
     (modify ?pP (precioMax ?rs) (precioMaxEstricto ?rse) (precioMin ?ri))
+    (retract (dormitorios_introducido))
     (assert (precio_introducido))
 )
+
+(defrule preguntaCercania "regla para saber la cercania a servicios deseada"
+    (nuevo_solicitante)
+    ?pC <- (PreferenciasCercania)
+    (precio_introducido)
+    (not (cercania_introducida))
+    =>
+    (bind ?listaServicios (create$ paradaMetro paradaBus centroComercial supermercado hipermercado colegio centroSalud zonaVerde ocioNocturno estadioDeportes gimnasio biblioteca))
+    (printout t "Servicios: " crlf)    
+    (printout t "1.  Parada de metro" crlf)
+    (printout t "2.  Parada de bus" crlf)
+    (printout t "3.  Centro comercial" crlf)
+    (printout t "4.  Supermercado" crlf)
+    (printout t "5.  Hipermercado" crlf)
+    (printout t "6.  Colegio" crlf)
+    (printout t "7.  Centro de salud" crlf)  
+    (printout t "8.  Zona verde" crlf)  
+    (printout t "9.  Zona de ocio nocturno" crlf)
+    (printout t "10. Estadio de deportes" crlf)
+    (printout t "11. Gimnasio" crlf)
+    (printout t "12. Biblioteca" crlf)
+    (bind ?sC (pregunta-lista "¿Que servicios quiere tener cerca (menos de 500m)? (escriba los numeros separados por espacios): " ))
+    (loop-for-count (?i 1 (length ?servicios)) do
+        (switch (nth$ ?i ?sC)
+            (case 1 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio paradaMetro))) (replace$ ?listaServicios 1 1 0))
+            (case 2 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio paradaBus))) (replace$ ?listaServicios 2 2 0))
+            (case 3 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio centroComercial))) (replace$ ?listaServicios 3 3 0))
+            (case 4 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio supermercado))) (replace$ ?listaServicios 4 4 0))
+            (case 5 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio hipermercado))) (replace$ ?listaServicios 5 5 0))
+            (case 6 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio colegio))) (replace$ ?listaServicios 6 6 0))
+            (case 7 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio centroSalud))) (replace$ ?listaServicios 7 7 0))
+            (case 8 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio zonaVerde))) (replace$ ?listaServicios 8 8 0))
+            (case 9 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio ocioNocturno))) (replace$ ?listaServicios 9 9 0))
+            (case 10 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio estadioDeportes))) (replace$ ?listaServicios 10 10 0))
+            (case 11 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio gimnasio))) (replace$ ?listaServicios 11 11 0))
+            (case 12 then (assert (PreferenciasCercania (cercania cerca) (tipoServicio biblioteca))) (replace$ ?listaServicios 12 12 0))
+        )
+    )
+    (printout t "Servicios restantes: " crlf)
+    (loop-for-count (?i 1 (length ?listaServicios))
+        (if (not (eq (nth$ ?i ?listaServicios) 0)) then
+            (switch ?i
+                (case 1 then (printout t "1.  Parada de metro" crlf))
+                (case 2 then (printout t "2.  Parada de bus" crlf))
+                (case 3 then (printout t "3.  Centro comercial" crlf))
+                (case 4 then (printout t "4.  Supermercado" crlf))
+                (case 5 then (printout t "5.  Hipermercado" crlf))
+                (case 6 then (printout t "6.  Colegio" crlf))
+                (case 7 then (printout t "7.  Centro de salud" crlf))  
+                (case 8 then (printout t "8.  Zona verde" crlf))  
+                (case 9 then (printout t "9.  Zona de ocio nocturno" crlf))
+                (case 10 then (printout t "10. Estadio de deportes" crlf))
+                (case 11 then (printout t "11. Gimnasio" crlf))
+                (case 12 then (printout t "12. Biblioteca" crlf))
+            )
+        )
+    )
+    (bind ?sC (pregunta-lista "¿Que servicios quiere tener a media distancia (entre 500m y 1km)? (escriba los numeros separados por espacios): " ))
+    (loop-for-count (?i 1 (length ?servicios)) do
+        (switch (nth$ ?i ?sC)
+            (case 1 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio paradaMetro))) (replace$ ?listaServicios 1 1 0))
+            (case 2 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio paradaBus))) (replace$ ?listaServicios 2 2 0))
+            (case 3 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio centroComercial))) (replace$ ?listaServicios 3 3 0))
+            (case 4 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio supermercado))) (replace$ ?listaServicios 4 4 0))
+            (case 5 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio hipermercado))) (replace$ ?listaServicios 5 5 0))
+            (case 6 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio colegio))) (replace$ ?listaServicios 6 6 0))
+            (case 7 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio centroSalud))) (replace$ ?listaServicios 7 7 0))
+            (case 8 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio zonaVerde))) (replace$ ?listaServicios 8 8 0))
+            (case 9 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio ocioNocturno))) (replace$ ?listaServicios 9 9 0))
+            (case 10 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio estadioDeportes))) (replace$ ?listaServicios 10 10 0))
+            (case 11 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio gimnasio))) (replace$ ?listaServicios 11 11 0))
+            (case 12 then (assert (PreferenciasCercania (cercania mediaDistancia) (tipoServicio biblioteca))) (replace$ ?listaServicios 12 12 0))
+        )
+    )
+    (printout t "Servicios restantes: " crlf)
+    (loop-for-count (?i 1 (length ?listaServicios))
+        (if (not (eq (nth$ ?i ?listaServicios) 0)) then
+            (switch ?i
+                (case 1 then (printout t "1.  Parada de metro" crlf))
+                (case 2 then (printout t "2.  Parada de bus" crlf))
+                (case 3 then (printout t "3.  Centro comercial" crlf))
+                (case 4 then (printout t "4.  Supermercado" crlf))
+                (case 5 then (printout t "5.  Hipermercado" crlf))
+                (case 6 then (printout t "6.  Colegio" crlf))
+                (case 7 then (printout t "7.  Centro de salud" crlf))  
+                (case 8 then (printout t "8.  Zona verde" crlf))  
+                (case 9 then (printout t "9.  Zona de ocio nocturno" crlf))
+                (case 10 then (printout t "10. Estadio de deportes" crlf))
+                (case 11 then (printout t "11. Gimnasio" crlf))
+                (case 12 then (printout t "12. Biblioteca" crlf))
+            )
+        )
+    )
+    (bind ?sC (pregunta-lista "¿Que servicios quiere tener lejos (minimo 1km)? (si le es indiferente, no hace falta introducirlo) (escriba los numeros separados por espacios): " ))
+    (loop-for-count (?i 1 (length ?servicios)) do
+        (switch (nth$ ?i ?sC)
+            (case 1 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio paradaMetro))))
+            (case 2 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio paradaBus))))
+            (case 3 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio centroComercial))))
+            (case 4 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio supermercado))))
+            (case 5 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio hipermercado))))
+            (case 6 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio colegio))))
+            (case 7 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio centroSalud))))
+            (case 8 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio zonaVerde))))
+            (case 9 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio ocioNocturno))))
+            (case 10 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio estadioDeportes))))
+            (case 11 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio gimnasio))))
+            (case 12 then (assert (PreferenciasCercania (cercania lejos) (tipoServicio biblioteca))))
+        )
+    )
+    (retract (precio_introducido))
+    (assert (cercania_introducida))
+)
+
 
 
 
@@ -1786,12 +1910,12 @@
 
 
 (defrule finPreguntasAbstaccionDatos "regla para pasar al modulo siguiente"
-      (nuevo_solicitante)
-      => 
-      (printout t crlf)
-      (printout t "Modulos: "crlf)
-      (printout t "Restricciones y Preferencias almacenadas" crlf)
-      (focus inferencia)     
+    (nuevo_solicitante)
+    => 
+    (printout t crlf)
+    (printout t "Modulos: "crlf)
+    (printout t "Restricciones y Preferencias almacenadas" crlf)
+    (focus inferencia)     
 )
 
 
@@ -1842,10 +1966,10 @@
 )
 
 (defrule fininferencia "regla para pasar al modulo siguiente"
-      (nuevo_solicitante)
-      =>  
-      (printout t "Inferencia de datos del perfil de los solicitantes hecha" crlf)
-      (focus filtrado) 
+    (nuevo_solicitante)
+    =>  
+    (printout t "Inferencia de datos del perfil de los solicitantes hecha" crlf)
+    (focus filtrado) 
 )
 
 

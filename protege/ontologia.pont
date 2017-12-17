@@ -1,4 +1,4 @@
-; Sun Dec 17 16:38:37 CET 2017
+; Sun Dec 17 19:46:26 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -277,7 +277,11 @@
 ;+		(cardinality 0 1)
 		(create-accessor read-write)))
 
-(defclass Piso
+(defclass Unifamiliar
+	(is-a Vivienda)
+	(role concrete))
+
+(defclass ViviendaBloque
 	(is-a Vivienda)
 	(role concrete)
 	(single-slot puerta
@@ -292,21 +296,11 @@
 		(create-accessor read-write)))
 
 (defclass Duplex
-	(is-a Vivienda)
-	(role concrete)
-	(single-slot puerta
-		(type SYMBOL)
-		(allowed-values A B C D E F)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
-	(single-slot piso
-		(type SYMBOL)
-		(allowed-values Bajo Primero Segundo Tercero Cuarto Quinto Sexto Septimo Octavo Noveno Decimo Atico)
-;+		(cardinality 0 1)
-		(create-accessor read-write)))
+	(is-a ViviendaBloque)
+	(role concrete))
 
-(defclass Unifamiliar
-	(is-a Vivienda)
+(defclass Piso
+	(is-a ViviendaBloque)
 	(role concrete))
 
 (defclass Localizacion
