@@ -16,7 +16,7 @@
 ;;;----------                   CLASES                          ----------                              CLASES
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
-; Sat Dec 16 21:06:55 CET 2017
+; Sun Dec 17 13:35:24 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -43,6 +43,11 @@
     (single-slot coche
         (type SYMBOL)
         (allowed-values FALSE TRUE)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot vivienda
+        (type INSTANCE)
+;+      (allowed-classes Vivienda)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot amueblada
@@ -73,14 +78,14 @@
         (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot tipoFamilia
-        (type SYMBOL)
-        (allowed-values Monoparental Biparental)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (single-slot mascotasPermitidas
         (type SYMBOL)
         (allowed-values FALSE TRUE)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot tipoFamilia
+        (type SYMBOL)
+        (allowed-values Monoparental Biparental)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (multislot preferencias
@@ -90,18 +95,18 @@
     (multislot edades
         (type INTEGER)
         (create-accessor read-write))
-    (multislot recomendaciones
-        (type INSTANCE)
-;+      (allowed-classes Vivienda)
+    (single-slot piscina
+        (type SYMBOL)
+        (allowed-values FALSE TRUE)
+;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot calle
         (type STRING)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot piscina
-        (type SYMBOL)
-        (allowed-values FALSE TRUE)
-;+      (cardinality 0 1)
+    (multislot recomendaciones
+        (type INSTANCE)
+;+      (allowed-classes Vivienda)
         (create-accessor read-write))
     (single-slot tipoDormitorio
         (type SYMBOL)
@@ -139,13 +144,13 @@
         (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot identificacion
-        (type STRING)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (single-slot puerta
         (type SYMBOL)
         (allowed-values A B C D E F)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot identificacion
+        (type STRING)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot precioMaxEstricto
@@ -153,22 +158,22 @@
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot numeroPersonas
-        (type INTEGER)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (single-slot numero
         (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot otrasCaracteristicas
-        (type INSTANCE)
-;+      (allowed-classes OtrasCaracteristicas)
+    (single-slot numeroPersonas
+        (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot piso
         (type SYMBOL)
         (allowed-values Bajo Primero Segundo Tercero Cuarto Quinto Sexto Septimo Octavo Noveno Decimo Atico)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot otrasCaracteristicas
+        (type INSTANCE)
+;+      (allowed-classes OtrasCaracteristicas)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot preferenciaTransportePublico
@@ -177,8 +182,7 @@
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (multislot criteriosNoCumplidos
-        (type INSTANCE)
-;+      (allowed-classes Restriccion)
+        (type STRING)
         (create-accessor read-write))
     (single-slot lugarTrabajaEstudia
         (type INSTANCE)
@@ -189,12 +193,12 @@
         (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot electrodomesticos
+    (single-slot calefaccion
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot calefaccion
+    (single-slot electrodomesticos
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
@@ -223,13 +227,13 @@
 ;+      (allowed-classes Servicio)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot precioMin
-        (type FLOAT)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (single-slot ma%C3%B1ana
         (type SYMBOL)
         (allowed-values FALSE TRUE)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot precioMin
+        (type FLOAT)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot coordX
@@ -253,13 +257,13 @@
 (defclass Vivienda
     (is-a USER)
     (role concrete)
+    (single-slot precio
+        (type FLOAT)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
     (single-slot localizacion
         (type INSTANCE)
 ;+      (allowed-classes Localizacion)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
-    (single-slot precio
-        (type FLOAT)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot balcon
@@ -281,14 +285,14 @@
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
+    (multislot dormitorios
+        (type INSTANCE)
+;+      (allowed-classes Dormitorio)
+        (create-accessor read-write))
     (single-slot terraza
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
-        (create-accessor read-write))
-    (multislot dormitorios
-        (type INSTANCE)
-;+      (allowed-classes Dormitorio)
         (create-accessor read-write))
     (single-slot otrasCaracteristicas
         (type INSTANCE)
@@ -382,12 +386,12 @@
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot calefaccion
+    (single-slot vistas
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot vistas
+    (single-slot calefaccion
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
@@ -423,20 +427,15 @@
     (multislot edades
         (type INTEGER)
         (create-accessor read-write))
-    (single-slot identificacion
-        (type STRING)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (multislot recomendaciones
         (type INSTANCE)
 ;+      (allowed-classes Vivienda)
         (create-accessor read-write))
-    (single-slot coche
-        (type SYMBOL)
-        (allowed-values FALSE TRUE)
+    (single-slot identificacion
+        (type STRING)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot trabajaEstudiaEnCiudad
+    (single-slot coche
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
@@ -444,6 +443,11 @@
     (multislot preferencias
         (type INSTANCE)
 ;+      (allowed-classes Restriccion)
+        (create-accessor read-write))
+    (single-slot trabajaEstudiaEnCiudad
+        (type SYMBOL)
+        (allowed-values FALSE TRUE)
+;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot preferenciaTransportePublico
         (type SYMBOL)
@@ -543,15 +547,22 @@
 
 (defclass Recomendacion
     (is-a USER)
-    (role concrete))
+    (role concrete)
+    (single-slot vivienda
+        (type INSTANCE)
+;+      (allowed-classes Vivienda)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (multislot caracteristicasDestacables
+        (type STRING)
+        (create-accessor read-write))
+    (multislot criteriosNoCumplidos
+        (type STRING)
+        (create-accessor read-write)))
 
 (defclass ParcialmenteAdecuado
     (is-a Recomendacion)
-    (role concrete)
-    (multislot criteriosNoCumplidos
-        (type INSTANCE)
-;+      (allowed-classes Restriccion)
-        (create-accessor read-write)))
+    (role concrete))
 
 (defclass Adecuado
     (is-a Recomendacion)
@@ -559,10 +570,7 @@
 
 (defclass MuyRecomendable
     (is-a Recomendacion)
-    (role concrete)
-    (multislot caracteristicasDestacables
-        (type STRING)
-        (create-accessor read-write)))
+    (role concrete))
 
 
 
@@ -572,7 +580,7 @@
 
 (definstances instances
 
-; Sat Dec 16 21:06:55 CET 2017
+; Sun Dec 17 13:35:24 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -1543,7 +1551,6 @@
 )
 
 
-
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------  					TEMPLATES					 		---------- 								TEMPLATES
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1593,7 +1600,7 @@
 ;;; deftemplates para almacenar las preferencias de los solicitantes
 
 (deftemplate PreferenciasCaracteristicas "Preferencias de las caracteristicas"
-    (multislot dormitoriosDeseados (type INSTANCE) (allowed-classes Dormitorio))
+    (multislot dormitoriosDeseados (type SYMBOL) (allowed-values Doble Simple))
     (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE indef) (default indef))
 )
 
@@ -1617,8 +1624,6 @@
     (slot recomendacion (type INSTANCE) (allowed-classes Recomendacion))
 )
 
-
-
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------                   FUNCIONES                           ----------                              EXTRAS
 ;;;-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1627,6 +1632,17 @@
 (deffunction pregunta-general (?pregunta) 
     (format t "%s" ?pregunta) 
     (bind ?respuesta (read)) 
+    ?respuesta
+)
+
+;;; Funcion para hacer una pregunta con respuesta numerica
+(deffunction pregunta-numerica-general (?pregunta) 
+    (format t "%s" ?pregunta) 
+    (bind ?respuesta (read)) 
+    (while (not(integerp ?respuesta)) do 
+        (format t "%s" ?pregunta) 
+        (bind ?respuesta (read)) 
+    ) 
     ?respuesta
 )
 
@@ -1679,29 +1695,50 @@
             (printout t "No existen unos solicitantes con esta identificacion." crlf)
             (bind ?identificacion (pregunta-general "Identificacion: ")) 
     )  
-    (assert (Solicitantes ?identificacion))  
+    (assert (solicitantes ?identificacion))  
     (focus hacer_preguntas)
 )
-
-
 
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------               MODULO DE PREGUNTAS                     ----------                          MODULO DE PREGUNTAS
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
-;; En este se le haran las preguntas al estudiantes 
-;; para obtener la informacion de sus restricciones y/o preferencias 
 
 (defmodule hacer_preguntas
     (import MAIN ?ALL)
     (export ?ALL)
 )
 
+(defrule insertaPreferencias "añadimos los echos de preferencias"
+    (nuevo_solicitante)
+    (not (PreferenciasCaracteristicas))
+    (not (PreferenciasPrecio))
+    (not (PreferenciasCercania))
+    =>
+    (assert(PreferenciasCaracteristicas))
+    (assert(PreferenciasPrecio))
+    (assert(PreferenciasCercania))
+)
 
 
-
-
-
+(defrule preguntarDormitorios "regla para saber cuantos dormitorios desea el solicitante"
+    (nuevo_solicitante)
+    ?pC <- (PreferenciasCaracteristicas)
+    (not (dormitorios_introducido))
+    =>
+    (bind ?rd (pregunta-numerica-general "¿Cuantos dormitorios dobles desea?:"))
+    (bind ?rs (pregunta-numerica-general "¿Cuantos dormitorios simples desea?:"))
+    (bind ?pCD (create$))
+    (loop-for-count (?i 1 ?rd) do
+        (bind ?pCD (insert$ ?pCD ?i Doble))
+    )
+    (loop-for-count (?i (+ ?rd 1) (+ ?rd ?rs)) do
+        (bind ?pCD (insert$ ?pCD ?i Simple))
+    )
+    (modify ?pC (dormitoriosDeseados ?pCD))
+    (printout t ?pC crlf)
+    (assert (dormitorios_introducido))
+)
 
 
 
@@ -1715,7 +1752,7 @@
       (printout t crlf)
       (printout t "Modulos: "crlf)
       (printout t "Restricciones y Preferencias almacenadas" crlf)
-      (focus inferir_datos)     
+      (focus inferencia)     
 )
 
 
@@ -1736,11 +1773,11 @@
     (nuevo_solicitante)
     (not (SolicitantesTemplate))
     ?solicitantes <- (Solicitantes ?identificacion)
-    ?si <- (object (is-a Solicitantes) (identificacion ?identificacion) (edades $?edades?))
+    ?si <- (object (is-a Solicitantes) (identificacion ?identificacion) (edades $?edades?) (trabajaEstudiaEnCiudad ?trabajaEstudiaEnCiudad) (lugarTrabajaEstudia ?lugarTrabajaEstudia) (coche ?coche) (preferenciaTransportePublico ?preferenciaTransportePublico))
     =>
     (retract ?solicitantes)
-    (assert (SolicitantesTemplate (tipo (class ?si)) (identificacion ?identificacion) (edades $?edades?) (trabajaEstudiaEnCiudad ?si:trabajaEstudiaEnCiudad) (lugarTrabajaEstudia ?si:lugarTrabajaEstudia) (coche ?si:coche) (preferenciaTransportePublico ?si:preferenciaTransportePublico)))
-    (printout (class ?si))
+    (assert (SolicitantesTemplate (tipo (class ?si)) (identificacion ?identificacion) (edades $?edades?) (trabajaEstudiaEnCiudad ?trabajaEstudiaEnCiudad) (lugarTrabajaEstudia ?lugarTrabajaEstudia) (coche ?coche) (preferenciaTransportePublico ?preferenciaTransportePublico)))
+    (printout t (class ?si) crlf)
 )
 
 
