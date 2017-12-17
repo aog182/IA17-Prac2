@@ -1543,7 +1543,6 @@
 )
 
 
-
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------  					TEMPLATES					 		---------- 								TEMPLATES
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1640,8 +1639,6 @@
     (slot recomendacion (type INSTANCE) (allowed-classes Recomendacion))
 )
 
-
-
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------                   FUNCIONES                           ----------                              EXTRAS
 ;;;-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1706,31 +1703,32 @@
     (focus hacer_preguntas)
 )
 
-
-
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------               MODULO DE PREGUNTAS                     ----------                          MODULO DE PREGUNTAS
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
-;; En este se le haran las preguntas al estudiantes 
-;; para obtener la informacion de sus restricciones y/o preferencias 
 
 (defmodule hacer_preguntas
     (import MAIN ?ALL)
     (export ?ALL)
 )
 
-
-
-
-;;;----------------------------------------------------------------------------------------------
-;;;----------               MODULO DE INFERENCIA DE DATOS DE SOLICITANTES              ----------
-;;;----------------------------------------------------------------------------------------------
-
-;; En este modulo se hace la inferencia de la informacion almacenada en el perfil de los solicitantes
-
-(defmodule inferencia
-    (import MAIN ?ALL)  
-    (import hacer_preguntas ?ALL)
-    (export ?ALL)
-) 
+(defrule preguntarDormitorios "regla para saber cuantos dormitorios desea el solicitante"
+    (nuevo_solicitante)
+    ?s <- (Solicitantes ?id)
+    ?solicitante <-(object (is-a Solicitantes)(identificacion ?id2))
+    (test (eq (str-compare  ?id ?id2) 0))
+    =>
+    (bind ?r (pregunta-lista "Cuantos dormitorios desea? Escribe 'simple' o 'doble' separado por espacios y sin comillas: "))
+    (bind ?pref (make-instance PreferenciasCaracteristicasT of PreferenciasCaracteristicas))
+    (progn$ (?it ?r)
+        (bind ?dorm (make-instance dormitorioT of Dormitorio))
+        (switch ?it)
+            (case "simple" then
+                (send ?dorm put-tipoDormitorio "simple")
+                (slot-insert$ ?pref dormitoriosDeseados 1 ?dorm))
+            (case "doble" then
+                (send ?dorm put-tipoDormitorio "doble")
+                (slot-insert$ ?pref dormitoriosDeseados 1 ?dorm)))
+    (assert dormitorios_deseados_introducidos)
+)
