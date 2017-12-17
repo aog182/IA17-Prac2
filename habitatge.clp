@@ -1763,7 +1763,7 @@
     =>
     (bind ?rs (pregunta-numerica-general "¿Cual es su limite superior de precio?:"))
     (bind ?rse (pregunta-opciones "¿Es este limite estricto, o podria pagar algo mas si la oferta merece la pena? [(1)Estricto-(2)No estricto]:" 1 2))
-    (bind ?ri ?rs)
+    (bind ?ri (+ ?rs 1))
     (while (> ?ri ?rs) do 
         (bind ?ri (pregunta-numerica-general "¿Cual es su limite inferior de precio?:"))
     )
