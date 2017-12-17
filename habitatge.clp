@@ -1551,6 +1551,16 @@
 ;;; ------------------- INFORMACION --------------------------
 ;;; deftemplates para almacenar la informacion de los solicitantes
 
+(deftemplate SolicitantesTemplate
+    (slot tipo (type SYMBOL) (allowed-values Familia Grupo Individuo ParejaHijosFuturo ParejaSinHijos))
+    (slot identificacion (type STRING))
+    (multislot edades (type INTEGER))
+    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
+    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+)
+
 (deftemplate Familia
     ;;; slots comunes
     (slot identificacion (type STRING))
@@ -1576,39 +1586,6 @@
     ;;; slots extra
     (slot numeroPersonas (type INTEGER))
     (slot algunEstudiante (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-)
-
-(deftemplate Individuo
-    ;;; slots comunes
-    (slot identificacion (type STRING))
-    (multislot edades (type INTEGER))
-    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
-    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    ;;; slots extra
-)
-
-(deftemplate ParejaHijosFuturo
-    ;;; slots comunes
-    (slot identificacion (type STRING))
-    (multislot edades (type INTEGER))
-    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
-    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    ;;; slots extra
-)
-
-(deftemplate ParejaSinHijos
-    ;;; slots comunes
-    (slot identificacion (type STRING))
-    (multislot edades (type INTEGER))
-    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
-    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    ;;; slots extra
 )
 
 
@@ -1701,8 +1678,8 @@
         do
             (printout t "No existen unos solicitantes con esta identificacion." crlf)
             (bind ?identificacion (pregunta-general "Identificacion: ")) 
-    ) 
-    (assert (Solicitantes ?identificacion))   
+    )  
+    (assert (Solicitantes ?identificacion))  
     (focus hacer_preguntas)
 )
 
@@ -1723,6 +1700,26 @@
 
 
 
+
+
+
+
+
+
+
+
+
+(defrule finPreguntasAbstaccionDatos "regla para pasar al modulo siguiente"
+      (nuevo_solicitante)
+      => 
+      (printout t crlf)
+      (printout t "Modulos: "crlf)
+      (printout t "Restricciones y Preferencias almacenadas" crlf)
+      (focus inferir_datos)     
+)
+
+
+
 ;;;----------------------------------------------------------------------------------------------
 ;;;----------               MODULO DE INFERENCIA DE DATOS DE SOLICITANTES              ----------
 ;;;----------------------------------------------------------------------------------------------
@@ -1733,4 +1730,57 @@
     (import MAIN ?ALL)  
     (import hacer_preguntas ?ALL)
     (export ?ALL)
-) 
+)
+
+(defrule insertaInfoBasica
+    (nuevo_solicitante)
+    (not (SolicitantesTemplate))
+    ?solicitantes <- (Solicitantes ?identificacion)
+    ?si <- (object (is-a Solicitantes) (identificacion ?identificacion) (edades $?edades?))
+    =>
+    (retract ?solicitantes)
+    (assert (SolicitantesTemplate (tipo (class ?si)) (identificacion ?identificacion) (edades $?edades?) (trabajaEstudiaEnCiudad ?si:trabajaEstudiaEnCiudad) (lugarTrabajaEstudia ?si:lugarTrabajaEstudia) (coche ?si:coche) (preferenciaTransportePublico ?si:preferenciaTransportePublico)))
+    (printout (class ?si))
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule fininferencia "regla para pasar al modulo siguiente"
+      (nuevo_solicitante)
+      =>  
+      (printout t "Inferencia de datos del perfil de los solicitantes hecha" crlf)
+      (focus filtrado) 
+)
+
+
+
+;;;------------------------------------------------------------------------------------------------------------------------------------------------------
+;;;----------               MODULO DE FILTRADO                  ----------                          MODULO DE FILTRADO  
+;;;------------------------------------------------------------------------------------------------------------------------------------------------------
+
+;; En este modulo se obtienen todas las asignaturas instanciadas
+;; y se irán descartando si no cumplen alguna restriccion
+
+(defmodule filtrado
+    (import MAIN ?ALL) 
+    (import inferencia ?ALL)
+    (export ?ALL)
+)
