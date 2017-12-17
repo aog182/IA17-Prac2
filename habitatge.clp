@@ -1643,7 +1643,43 @@
     ?res
 )
 
+;;;------------------------------------------------------------------------------------------------------------------------------------------------------
+;;;----------  					MENSAJES					 		---------- 								MENSAJES
+;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
+;;; Mensajes a las clases 
+
+
+(defmessage-handler Recomendacion print-criterios-no-cumplidos primary()
+    (printout t "CRITERIOS NO CUMPLIDOS " (instance-name ?self) crlf)
+    (progn$ (?criterio ?self:criteriosNoCumplidos)
+        (printout t "--> " ?criterio crlf))
+	(printout t "----------------------------------------------------- " crlf)
+)
+
+(defmessage-handler Recomendacion añadir-criterio-no-cumplido primary(?restriccion)
+    (slot-insert$ ?self criteriosNoCumplidos 1 ?restriccion)
+    (if (> (length$ ?self:criteriosNoCumplidos) 2) then
+    	(printout t "Eliminada porque no cumple con mas de dos criterios " (instance-name ?self) crlf)
+        (printout t "Los criterios incumplidos son:" crlf)
+        (send ?self print-criterios-no-cumplidos)
+        (send ?self delete))
+)
+
+(defmessage-handler Recomendacion print-caracteristicas-destacables primary()
+    (printout t "CARACTERISTICAS DESTACABLES " (instance-name ?self) crlf)
+    (progn$ (?destacable ?self:caracteristicasDestacables)
+        (printout t "--> " ?destacable crlf))
+	(printout t "----------------------------------------------------- " crlf)
+)
+
+(defmessage-handler Recomendacion añadir-caracteristica-destacable primary(?caracteristica)
+	(slot-insert$ ?self caracteristicasDestacables 1 ?caracteristica)
+)
+
+(defmessage-handler Localizacion get-location-string primary()
+    (sym-cat ?self:calle " " ?self:numero)
+)
 
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 ;;;----------                    MAIN                           ----------                              MAIN
@@ -1806,14 +1842,144 @@
 
 
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
-;;;----------               MODULO DE FILTRADO                  ----------                          MODULO DE FILTRADO  
+;;;----------  				MODULO DE FILTRADO			 		---------- 							MODULO DE FILTRADO	
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
-;; En este modulo se obtienen todas las asignaturas instanciadas
-;; y se irán descartando si no cumplen alguna restriccion
+;; En este modulo se obtienen todas las viviendas instanciadas
+;; y iran descartandose si no cumplen las restricciones 
 
 (defmodule filtrado
-    (import MAIN ?ALL) 
+	(import MAIN ?ALL) 
     (import inferencia ?ALL)
-    (export ?ALL)
+	(export ?ALL)
+)
+
+;;; Obtener todos las viviendas para poder descartar segun las restricciones
+(defrule obtenerViviendas 
+	(nuevo_solicitante)
+	=>
+	(bind $?allViviendas (find-all-instances((?inst Vivienda)) TRUE))
+	(loop-for-count (?i 1 (length$ ?allViviendas)) do
+		(bind ?vivienda (nth$ ?i ?allViviendas))
+        (bind ?location (instance-address * (send ?vivienda get-localizacion)))
+		(bind ?idRec (send ?location get-location-string)) 
+		(bind ?inst (make-instance ?idRec of Recomendacion))
+		(send ?inst put-vivienda (instance-address ?vivienda))
+	)
+	(printout t crlf)
+	(printout t " Viviendas eliminadas por no cumplir restricciones: " crlf)
+	(printout t "----------------------------------------------------- " crlf)
+)
+
+(defrule filtrarPorPrecio "regla que comprueba los precios de las viviendas"
+	?posRecm  <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    (bind ?precio (send ?vivienda get-precio))
+    ;;; MISSING PRECIOMINIMO, MAXIMO I ESTRICTO
+    (bind ?precioMinimo 800)
+    (bind ?precioMaximo 1200)
+    (bind ?precioEstricto FALSE)
+    (if (>= ?precio ?precioMinimo) then
+        (if (> ?precio ?precioMaximo) then
+            (if (and (eq ?precioEstricto FALSE) (>= (* 1.1 ?precioMaximo) ?precio)) then
+                (send ?posRecm añadir-criterio-no-cumplido "Precio algo mas caro")
+            else
+                (printout t "Eliminada por precio demasiado alto " (instance-name ?posRecm) crlf)	
+                (send ?posRecm delete))
+        else (if (<= ?precio (+ ?precioMinimo (* 0.25 (- ?precioMaximo ?precioMinimo )))) then
+            (send ?posRecm añadir-caracteristica-destacable "Precio bajo")))
+    else
+	    (printout t "Eliminada por precio demasiado bajo " (instance-name ?posRecm) crlf)	
+	    (send ?posRecm delete))
+)
+
+(defrule filtrarPorDormitorios "regla que comprueba que la vivienda se ajuste al numero de dormitorios deseado"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+
+)
+
+(defrule filtrarPorSoleado "regla que valora una vivienda en funcion de cuan soleada es"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    (bind ?caracteristicas (instance-address * (send ?vivienda get-otrasCaracteristicas)))
+    (bind ?soleado (send ?caracteristicas get-soleado))
+    (if (eq ?soleado DiaCompleto) then
+        (send ?posRecm añadir-caracteristica-destacable "Soleada todo el dia")
+    else (if (eq ?soleado Poco) then
+        (send ?posRecm añadir-criterio-no-cumplido "Poco soleada")
+    ))
+)
+
+(defrule filtrarPorAclimatación "regla que valora una vivienda en funcion de si esta aclimatada"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    (bind ?caracteristicas (instance-address * (send ?vivienda get-otrasCaracteristicas)))
+    (if (or (eq (send ?caracteristicas get-calefaccion) TRUE) (eq (send ?caracteristicas get-aireAcondicionado) TRUE)) then
+        (send ?posRecm añadir-caracteristica-destacable "Aclimatada"))
+)
+
+(defrule filtrarPorZonaAbierta "regla que valora una vivienda en funcion de si tiene zonas abiertas"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    (if (or (eq (send ?vivienda get-terraza) TRUE) (eq (send ?vivienda get-balcon) TRUE)) then
+        (send ?posRecm añadir-caracteristica-destacable "Zonas abiertas"))
+)
+
+(defrule filtrarPorEquipación "regla que valora una vivienda en funcion de si trae algun equipamiento"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    (if (or (eq (send ?vivienda get-electrodomesticos) TRUE) (eq (send ?vivienda get-amueblada) TRUE)) then
+        (send ?posRecm añadir-caracteristica-destacable "Equipada"))
+)
+
+
+(defrule filtrarPorPiscina "regla que valora una vivienda en funcion de si tiene piscina"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    (bind ?caracteristicas (instance-address * (send ?vivienda get-otrasCaracteristicas)))
+    (if (eq (send ?caracteristicas get-piscina) TRUE) then
+        (send ?posRecm añadir-caracteristica-destacable "Acceso a piscina"))
+)
+
+(defrule filtrarPorVistas "regla que valora una vivienda en funcion de si tiene vistas"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    (bind ?caracteristicas (instance-address * (send ?vivienda get-otrasCaracteristicas)))
+    (if (eq (send ?caracteristicas get-vistas) TRUE) then
+        (send ?posRecm añadir-caracteristica-destacable "Buenas vistas"))
+)
+
+(defrule filtrarPorMascotas "regla que valora una vivienda en funcion de si es optima para mascotas"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    ;;; MISSING JARDIN
+    (bind ?caracteristicas (instance-address * (send ?vivienda get-otrasCaracteristicas)))
+    (if (eq (send ?caracteristicas get-mascotasPermitidas) TRUE) then
+        (send ?posRecm añadir-caracteristica-destacable "Optima para mascotas"))
+)
+
+(defrule filtrarPorVehiculo "regla que valora una vivienda en funcion de si es apta para gente con vehiculos"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    ?st <- (SolicitantesTemplate (coche ?hasCoche))
+    =>
+    (bind ?caracteristicas (instance-address * (send ?vivienda get-otrasCaracteristicas)))
+    (bind ?carFriendly (eq (send ?caracteristicas get-garaje) TRUE))
+    (if (eq ?hasCoche TRUE) then
+        (if (eq ?carFriendly FALSE) then (send ?posRecm añadir-criterio-no-cumplido "No apta para vehiculos"))
+    else 
+        (if (eq ?carFriendly TRUE) then (send ?posRecm añadir-caracteristica-destacable "Apta para vehiculos")))
+)
+
+(defrule finfiltrado "regla para pasar al siguiente modulo"
+    (nuevo_solicitante)
+    => 
+    (printout t crlf)
+    (printout t "Filtrado completado." crlf)
+    (bind $?allRecomendaciones (find-all-instances((?inst Recomendacion)) TRUE))
+	(loop-for-count (?i 1 (length$ ?allRecomendaciones)) do
+		(bind ?recomendacion (nth$ ?i ?allRecomendaciones))
+        (send ?recomendacion print-criterios-no-cumplidos)
+        (send ?recomendacion print-caracteristicas-destacables)
+	)
 )
