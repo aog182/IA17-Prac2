@@ -16,7 +16,7 @@
 ;;;----------                   CLASES                          ----------                              CLASES
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
-; Sun Dec 17 13:35:24 CET 2017
+; Sun Dec 17 16:38:37 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -57,7 +57,7 @@
         (create-accessor read-write))
     (single-slot soleado
         (type SYMBOL)
-        (allowed-values Tarde DiaCompleto Manana)
+        (allowed-values Tarde DiaCompleto Manana Poco)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (multislot dormitoriosDeseados
@@ -227,11 +227,6 @@
 ;+      (allowed-classes Servicio)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot ma%C3%B1ana
-        (type SYMBOL)
-        (allowed-values FALSE TRUE)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (single-slot precioMin
         (type FLOAT)
 ;+      (cardinality 0 1)
@@ -398,7 +393,7 @@
         (create-accessor read-write))
     (single-slot soleado
         (type SYMBOL)
-        (allowed-values Tarde DiaCompleto Manana)
+        (allowed-values Tarde DiaCompleto Manana Poco)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot garaje
@@ -580,7 +575,7 @@
 
 (definstances instances
 
-; Sun Dec 17 13:35:24 CET 2017
+; Sun Dec 17 16:33:20 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -606,7 +601,8 @@
 ([ontologia_Class10] of  OtrasCaracteristicas
 
     (calefaccion TRUE)
-    (mascotasPermitidas TRUE))
+    (mascotasPermitidas TRUE)
+    (soleado Tarde))
 
 ([ontologia_Class10000] of  Localizacion
 
@@ -944,7 +940,7 @@
     (electrodomesticos FALSE)
     (localizacion [ontologia_Class10000])
     (otrasCaracteristicas [ontologia_Class8])
-    (piso 1)
+    (piso Bajo)
     (precio 700.0)
     (puerta D)
     (superficie 65)
@@ -986,7 +982,7 @@
     (electrodomesticos TRUE)
     (localizacion [ontologia_Class4])
     (otrasCaracteristicas [ontologia_Class5])
-    (piso 5)
+    (piso Bajo)
     (precio 800.0)
     (puerta A)
     (superficie 91)
@@ -1007,7 +1003,7 @@
         [ontologia_Class30])
     (localizacion [ontologia_Class10024])
     (otrasCaracteristicas [ontologia_Class6])
-    (piso 2)
+    (piso Bajo)
     (precio 1500.0)
     (puerta E)
     (superficie 160))
@@ -1023,7 +1019,7 @@
     (electrodomesticos TRUE)
     (localizacion [ontologia_Class10007])
     (otrasCaracteristicas [ontologia_Class6])
-    (piso 3)
+    (piso Tercero)
     (precio 750.0)
     (puerta F)
     (superficie 87))
@@ -1037,7 +1033,7 @@
     (electrodomesticos TRUE)
     (localizacion [ontologia_Class10018])
     (otrasCaracteristicas [ontologia_Class9])
-    (piso 4)
+    (piso Primero)
     (precio 550.0)
     (puerta F)
     (superficie 35))
@@ -1052,7 +1048,7 @@
     (electrodomesticos TRUE)
     (localizacion [ontologia_Class10014])
     (otrasCaracteristicas [ontologia_Class10])
-    (piso 5)
+    (piso Segundo)
     (precio 900.0)
     (puerta A)
     (superficie 90)
@@ -1391,7 +1387,7 @@
     (garaje FALSE)
     (mascotasPermitidas FALSE)
     (piscina FALSE)
-    (soleado ma%C3%B1ana)
+    (soleado DiaCompleto)
     (vistas FALSE))
 
 ([ontologia_Class50] of  RestriccionCercania
@@ -1451,6 +1447,7 @@
     (garaje FALSE)
     (mascotasPermitidas FALSE)
     (piscina FALSE)
+    (soleado Poco)
     (vistas FALSE))
 
 ([ontologia_Class60] of  RestriccionCercania
@@ -1505,6 +1502,7 @@
     (calefaccion TRUE)
     (garaje TRUE)
     (mascotasPermitidas TRUE)
+    (soleado Manana)
     (vistas TRUE))
 
 ([ontologia_Class70] of  RestriccionPrecio
@@ -1537,6 +1535,7 @@
     (aireAcondicionado TRUE)
     (calefaccion TRUE)
     (piscina TRUE)
+    (soleado DiaCompleto)
     (vistas TRUE))
 
 ([ontologia_Class9] of  OtrasCaracteristicas
@@ -1545,7 +1544,7 @@
     (calefaccion TRUE)
     (garaje TRUE)
     (mascotasPermitidas TRUE)
-    (soleado diaCompleto)
+    (soleado Manana)
     (vistas FALSE))
 
 )
@@ -1566,33 +1565,12 @@
     (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
     (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
     (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-)
-
-(deftemplate Familia
-    ;;; slots comunes
-    (slot identificacion (type STRING))
-    (multislot edades (type INTEGER))
-    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
-    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
     ;;; slots extra
     (slot hijos (type INTEGER))
     (slot ancianosACargo (type INTEGER))
-    (slot tipoFamilia (type SYMBOL) (allowed-values monoparental biparental) (default biparental))
-)
-
-(deftemplate Grupo
-    ;;; slots comunes
-    (slot identificacion (type STRING))
-    (multislot edades (type INTEGER))
-    (slot trabajaEstudiaEnCiudad (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot lugarTrabajaEstudia (type INSTANCE) (allowed-classes Localizacion))
-    (slot coche (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    (slot preferenciaTransportePublico (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
-    ;;; slots extra
+    (slot tipoFamilia (type SYMBOL) (allowed-values monoparental biparental Indef) (default Indef))
     (slot numeroPersonas (type INTEGER))
-    (slot algunEstudiante (type SYMBOL) (allowed-values TRUE FALSE) (default FALSE))
+    (slot algunEstudiante (type SYMBOL) (allowed-values TRUE FALSE Indef) (default Indef))
 )
 
 
@@ -1736,7 +1714,6 @@
         (bind ?pCD (insert$ ?pCD ?i Simple))
     )
     (modify ?pC (dormitoriosDeseados ?pCD))
-    (printout t ?pC crlf)
     (assert (dormitorios_introducido))
 )
 
@@ -1772,16 +1749,35 @@
 (defrule insertaInfoBasica
     (nuevo_solicitante)
     (not (SolicitantesTemplate))
-    ?solicitantes <- (Solicitantes ?identificacion)
-    ?si <- (object (is-a Solicitantes) (identificacion ?identificacion) (edades $?edades?) (trabajaEstudiaEnCiudad ?trabajaEstudiaEnCiudad) (lugarTrabajaEstudia ?lugarTrabajaEstudia) (coche ?coche) (preferenciaTransportePublico ?preferenciaTransportePublico))
+    ?solicitantes <- (solicitantes ?id1)
+    ?si <- (object (is-a Solicitantes) (identificacion ?id2) (edades $?edades?) (trabajaEstudiaEnCiudad ?trabajaEstudiaEnCiudad) (lugarTrabajaEstudia ?lugarTrabajaEstudia) (coche ?coche) (preferenciaTransportePublico ?preferenciaTransportePublico))
+    (test (eq (str-cat ?id1) ?id2))
     =>
     (retract ?solicitantes)
-    (assert (SolicitantesTemplate (tipo (class ?si)) (identificacion ?identificacion) (edades $?edades?) (trabajaEstudiaEnCiudad ?trabajaEstudiaEnCiudad) (lugarTrabajaEstudia ?lugarTrabajaEstudia) (coche ?coche) (preferenciaTransportePublico ?preferenciaTransportePublico)))
-    (printout t (class ?si) crlf)
+    (assert (SolicitantesTemplate (tipo (class ?si)) (identificacion ?id2) (edades $?edades?) (trabajaEstudiaEnCiudad ?trabajaEstudiaEnCiudad) (lugarTrabajaEstudia ?lugarTrabajaEstudia) (coche ?coche) (preferenciaTransportePublico ?preferenciaTransportePublico)))
 )
 
+(defrule insertaInfoExtraFamilia
+    ?st <- (SolicitantesTemplate (tipo ?tipo) (identificacion ?id1))
+    (test (eq ?tipo Familia))
+    ?si <- (object (is-a Familia) (identificacion ?id2) (hijos ?h) (ancianosACargo ?aac) (tipoFamilia ?tf))
+    (test (eq ?id1 ?id2))
+    (not (info_extra))
+    =>
+    (modify ?st (hijos ?h) (ancianosACargo ?aac) (tipoFamilia ?tf))
+    (assert (info_extra))
+)
 
-
+(defrule insertaInfoExtraGrupo
+    ?st <- (SolicitantesTemplate (tipo ?tipo) (identificacion ?id1))
+    (test (eq ?tipo Grupo))
+    ?si <- (object (is-a Grupo) (identificacion ?id2) (numeroPersonas ?np) (algunEstudiante ?ae))
+    (test (eq ?id1 ?id2))
+    (not (info_extra))
+    =>
+    (modify ?st (numeroPersonas ?np) (algunEstudiante ?ae))
+    (assert (info_extra))
+)
 
 
 

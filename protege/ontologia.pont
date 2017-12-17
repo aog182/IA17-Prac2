@@ -1,4 +1,4 @@
-; Sun Dec 17 13:35:24 CET 2017
+; Sun Dec 17 16:38:37 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -39,7 +39,7 @@
 		(create-accessor read-write))
 	(single-slot soleado
 		(type SYMBOL)
-		(allowed-values Tarde DiaCompleto Manana)
+		(allowed-values Tarde DiaCompleto Manana Poco)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(multislot dormitoriosDeseados
@@ -209,11 +209,6 @@
 ;+		(allowed-classes Servicio)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot ma%C3%B1ana
-		(type SYMBOL)
-		(allowed-values FALSE TRUE)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot precioMin
 		(type FLOAT)
 ;+		(cardinality 0 1)
@@ -380,7 +375,7 @@
 		(create-accessor read-write))
 	(single-slot soleado
 		(type SYMBOL)
-		(allowed-values Tarde DiaCompleto Manana)
+		(allowed-values Tarde DiaCompleto Manana Poco)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
 	(single-slot garaje
