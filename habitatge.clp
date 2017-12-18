@@ -16,7 +16,7 @@
 ;;;----------                   CLASES                          ----------                              CLASES
 ;;;------------------------------------------------------------------------------------------------------------------------------------------------------
 
-; Sun Dec 17 19:46:26 CET 2017
+; Mon Dec 18 21:01:49 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -45,14 +45,14 @@
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot vivienda
-        (type INSTANCE)
-;+      (allowed-classes Vivienda)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (single-slot amueblada
         (type SYMBOL)
         (allowed-values FALSE TRUE)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot vivienda
+        (type INSTANCE)
+;+      (allowed-classes Vivienda)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot soleado
@@ -78,14 +78,14 @@
         (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot mascotasPermitidas
-        (type SYMBOL)
-        (allowed-values FALSE TRUE)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (single-slot tipoFamilia
         (type SYMBOL)
         (allowed-values Monoparental Biparental)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot mascotasPermitidas
+        (type SYMBOL)
+        (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (multislot preferencias
@@ -95,18 +95,18 @@
     (multislot edades
         (type INTEGER)
         (create-accessor read-write))
-    (single-slot piscina
-        (type SYMBOL)
-        (allowed-values FALSE TRUE)
-;+      (cardinality 0 1)
+    (multislot recomendaciones
+        (type INSTANCE)
+;+      (allowed-classes Vivienda)
         (create-accessor read-write))
     (single-slot calle
         (type STRING)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (multislot recomendaciones
-        (type INSTANCE)
-;+      (allowed-classes Vivienda)
+    (single-slot piscina
+        (type SYMBOL)
+        (allowed-values FALSE TRUE)
+;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot tipoDormitorio
         (type SYMBOL)
@@ -144,13 +144,13 @@
         (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
+    (single-slot identificacion
+        (type STRING)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
     (single-slot puerta
         (type SYMBOL)
         (allowed-values A B C D E F)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
-    (single-slot identificacion
-        (type STRING)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot precioMaxEstricto
@@ -158,22 +158,22 @@
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot numero
-        (type INTEGER)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (single-slot numeroPersonas
         (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot piso
-        (type SYMBOL)
-        (allowed-values Bajo Primero Segundo Tercero Cuarto Quinto Sexto Septimo Octavo Noveno Decimo Atico)
+    (single-slot numero
+        (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot otrasCaracteristicas
         (type INSTANCE)
 ;+      (allowed-classes OtrasCaracteristicas)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot piso
+        (type SYMBOL)
+        (allowed-values Bajo Primero Segundo Tercero Cuarto Quinto Sexto Septimo Octavo Noveno Decimo Atico)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot preferenciaTransportePublico
@@ -193,12 +193,12 @@
         (type INTEGER)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot calefaccion
+    (single-slot electrodomesticos
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot electrodomesticos
+    (single-slot calefaccion
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
@@ -252,13 +252,13 @@
 (defclass Vivienda
     (is-a USER)
     (role concrete)
-    (single-slot precio
-        (type FLOAT)
-;+      (cardinality 0 1)
-        (create-accessor read-write))
     (single-slot localizacion
         (type INSTANCE)
 ;+      (allowed-classes Localizacion)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot precio
+        (type FLOAT)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot balcon
@@ -280,14 +280,14 @@
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (multislot dormitorios
-        (type INSTANCE)
-;+      (allowed-classes Dormitorio)
-        (create-accessor read-write))
     (single-slot terraza
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (multislot dormitorios
+        (type INSTANCE)
+;+      (allowed-classes Dormitorio)
         (create-accessor read-write))
     (single-slot otrasCaracteristicas
         (type INSTANCE)
@@ -375,12 +375,12 @@
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot vistas
+    (single-slot calefaccion
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
-    (single-slot calefaccion
+    (single-slot vistas
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
@@ -416,15 +416,20 @@
     (multislot edades
         (type INTEGER)
         (create-accessor read-write))
-    (multislot recomendaciones
-        (type INSTANCE)
-;+      (allowed-classes Vivienda)
-        (create-accessor read-write))
     (single-slot identificacion
         (type STRING)
 ;+      (cardinality 0 1)
         (create-accessor read-write))
+    (multislot recomendaciones
+        (type INSTANCE)
+;+      (allowed-classes Vivienda)
+        (create-accessor read-write))
     (single-slot coche
+        (type SYMBOL)
+        (allowed-values FALSE TRUE)
+;+      (cardinality 0 1)
+        (create-accessor read-write))
+    (single-slot trabajaEstudiaEnCiudad
         (type SYMBOL)
         (allowed-values FALSE TRUE)
 ;+      (cardinality 0 1)
@@ -432,11 +437,6 @@
     (multislot preferencias
         (type INSTANCE)
 ;+      (allowed-classes Restriccion)
-        (create-accessor read-write))
-    (single-slot trabajaEstudiaEnCiudad
-        (type SYMBOL)
-        (allowed-values FALSE TRUE)
-;+      (cardinality 0 1)
         (create-accessor read-write))
     (single-slot preferenciaTransportePublico
         (type SYMBOL)
@@ -569,7 +569,7 @@
 
 (definstances instances
 
-; Sun Dec 17 19:46:26 CET 2017
+; Mon Dec 18 21:07:51 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -587,8 +587,8 @@
 ([ontologia_Class1] of  Localizacion
 
     (calle "Jordi Girona")
-    (coordX 500)
-    (coordY 5500)
+    (coordX 100)
+    (coordY 1100)
     (distrito Noroeste)
     (numero 1))
 
@@ -601,200 +601,200 @@
 ([ontologia_Class10000] of  Localizacion
 
     (calle "Anakin")
-    (coordX 6500)
-    (coordY 1500)
+    (coordX 1300)
+    (coordY 300)
     (distrito Sureste)
     (numero 12))
 
 ([ontologia_Class10001] of  Localizacion
 
     (calle "Starkiller")
-    (coordX 2000)
-    (coordY 2000)
+    (coordX 400)
+    (coordY 400)
     (distrito Suroeste)
     (numero 33))
 
 ([ontologia_Class10002] of  Localizacion
 
     (calle "Ewok")
-    (coordX 2000)
-    (coordY 7000)
+    (coordX 400)
+    (coordY 1400)
     (distrito Noroeste)
     (numero 1))
 
 ([ontologia_Class10003] of  Localizacion
 
     (calle "Imperio")
-    (coordX 7000)
-    (coordY 7000)
+    (coordX 1400)
+    (coordY 1400)
     (distrito Noreste)
     (numero 1))
 
 ([ontologia_Class10004] of  Localizacion
 
     (calle "Tatooine")
-    (coordX 7000)
-    (coordY 2000)
+    (coordX 1400)
+    (coordY 400)
     (distrito Sureste)
     (numero 56))
 
 ([ontologia_Class10005] of  Localizacion
 
     (calle "Jabba")
-    (coordX 2500)
-    (coordY 2500)
+    (coordX 500)
+    (coordY 500)
     (distrito Suroeste)
     (numero 89))
 
 ([ontologia_Class10006] of  Localizacion
 
     (calle "Fett")
-    (coordX 2500)
-    (coordY 7500)
+    (coordX 500)
+    (coordY 1500)
     (distrito Noroeste)
     (numero 30))
 
 ([ontologia_Class10007] of  Localizacion
 
     (calle "Boba")
-    (coordX 7500)
-    (coordY 7500)
+    (coordX 1500)
+    (coordY 1500)
     (distrito Noreste)
     (numero 43))
 
 ([ontologia_Class10008] of  Localizacion
 
     (calle "Yoda")
-    (coordX 7500)
-    (coordY 2500)
+    (coordX 1500)
+    (coordY 500)
     (distrito Sureste)
     (numero 1))
 
 ([ontologia_Class10009] of  Localizacion
 
     (calle "Luke")
-    (coordX 3000)
-    (coordY 3000)
+    (coordX 600)
+    (coordY 600)
     (distrito Suroeste)
     (numero 20))
 
 ([ontologia_Class10010] of  Localizacion
 
     (calle "Kylo Ren")
-    (coordX 3000)
-    (coordY 8000)
+    (coordX 600)
+    (coordY 1600)
     (distrito Noroeste)
     (numero 23))
 
 ([ontologia_Class10011] of  Localizacion
 
     (calle "Palpatine")
-    (coordX 8000)
-    (coordY 8000)
+    (coordX 1600)
+    (coordY 1600)
     (distrito Noreste)
     (numero 111))
 
 ([ontologia_Class10012] of  Localizacion
 
     (calle "Kamino")
-    (coordX 8000)
-    (coordY 3000)
+    (coordX 1600)
+    (coordY 600)
     (distrito Sureste)
     (numero 90))
 
 ([ontologia_Class10013] of  Localizacion
 
     (calle "Droide")
-    (coordX 3500)
-    (coordY 3500)
+    (coordX 700)
+    (coordY 700)
     (distrito Suroeste)
     (numero 21))
 
 ([ontologia_Class10014] of  Localizacion
 
     (calle "Clon")
-    (coordX 3500)
-    (coordY 8500)
+    (coordX 700)
+    (coordY 1700)
     (distrito Noroeste)
     (numero 1000))
 
 ([ontologia_Class10015] of  Localizacion
 
     (calle "Sebulba")
-    (coordX 8500)
-    (coordY 8500)
+    (coordX 1700)
+    (coordY 1700)
     (distrito Noreste)
     (numero 24))
 
 ([ontologia_Class10016] of  Localizacion
 
     (calle "Galen Marek")
-    (coordX 8500)
-    (coordY 3500)
+    (coordX 1700)
+    (coordY 700)
     (distrito Sureste)
     (numero 1))
 
 ([ontologia_Class10017] of  Localizacion
 
     (calle "Plagueis")
-    (coordX 4000)
-    (coordY 4000)
+    (coordX 800)
+    (coordY 800)
     (distrito Suroeste)
     (numero 88))
 
 ([ontologia_Class10018] of  Localizacion
 
     (calle "Capitan Panaka")
-    (coordX 4000)
-    (coordY 9000)
+    (coordX 800)
+    (coordY 1800)
     (distrito Noroeste)
     (numero 4))
 
 ([ontologia_Class10019] of  Localizacion
 
     (calle "General Grievous")
-    (coordX 9000)
-    (coordY 9000)
+    (coordX 1800)
+    (coordY 1800)
     (distrito Noreste)
     (numero 6))
 
 ([ontologia_Class10020] of  Localizacion
 
     (calle "Shmi")
-    (coordX 9000)
-    (coordY 4000)
+    (coordX 1800)
+    (coordY 800)
     (distrito Sureste)
     (numero 20))
 
 ([ontologia_Class10021] of  Localizacion
 
     (calle "Nihilus")
-    (coordX 4500)
-    (coordY 4500)
+    (coordX 900)
+    (coordY 900)
     (distrito Suroeste)
     (numero 88))
 
 ([ontologia_Class10022] of  Localizacion
 
     (calle "Almirante Ackbar")
-    (coordX 4500)
-    (coordY 9500)
+    (coordX 900)
+    (coordY 1900)
     (distrito Noroeste)
     (numero 5))
 
 ([ontologia_Class10023] of  Localizacion
 
     (calle "Jawas")
-    (coordX 9500)
-    (coordY 9500)
+    (coordX 1900)
+    (coordY 1900)
     (distrito Noreste)
     (numero 1000))
 
 ([ontologia_Class10024] of  Localizacion
 
     (calle "Asajj Ventress")
-    (coordX 9500)
-    (coordY 4500)
+    (coordX 1900)
+    (coordY 900)
     (distrito Sureste)
     (numero 13))
 
@@ -810,22 +810,22 @@
 
     (calle "Revan")
     (coordX 0)
-    (coordY 10000)
+    (coordY 2000)
     (distrito Noroeste)
     (numero 1))
 
 ([ontologia_Class10027] of  Localizacion
 
     (calle "Maul")
-    (coordX 10000)
-    (coordY 10000)
+    (coordX 2000)
+    (coordY 2000)
     (distrito Noreste)
     (numero 56))
 
 ([ontologia_Class10028] of  Localizacion
 
     (calle "Vader")
-    (coordX 10000)
+    (coordX 2000)
     (coordY 0)
     (distrito Sureste)
     (numero 1))
@@ -865,56 +865,56 @@
 ([ontologia_Class11] of  Localizacion
 
     (calle "Villarroel")
-    (coordX 500)
-    (coordY 500)
+    (coordX 100)
+    (coordY 100)
     (distrito Suroeste)
     (numero 8))
 
 ([ontologia_Class12] of  Localizacion
 
     (calle "Estrella de la muerte")
-    (coordX 1000)
-    (coordY 6000)
+    (coordX 200)
+    (coordY 1200)
     (distrito Noroeste)
     (numero 10))
 
 ([ontologia_Class13] of  Localizacion
 
     (calle "Kenobi")
-    (coordX 6000)
-    (coordY 6000)
+    (coordX 1200)
+    (coordY 1200)
     (distrito Noreste)
     (numero 59))
 
 ([ontologia_Class14] of  Localizacion
 
     (calle "Naboo")
-    (coordX 6000)
-    (coordY 1000)
+    (coordX 1200)
+    (coordY 200)
     (distrito Sureste)
     (numero 34))
 
 ([ontologia_Class15] of  Localizacion
 
     (calle "Mos Eisley")
-    (coordX 1500)
-    (coordY 1500)
+    (coordX 300)
+    (coordY 300)
     (distrito Suroeste)
     (numero 40))
 
 ([ontologia_Class16] of  Localizacion
 
     (calle "Sith")
-    (coordX 1500)
-    (coordY 6500)
+    (coordX 300)
+    (coordY 1300)
     (distrito Noroeste)
     (numero 90))
 
 ([ontologia_Class17] of  Localizacion
 
     (calle "Wookie")
-    (coordX 6500)
-    (coordY 6500)
+    (coordX 1300)
+    (coordY 1300)
     (distrito Noreste)
     (numero 5))
 
@@ -952,8 +952,8 @@
 ([ontologia_Class26] of  Localizacion
 
     (calle "Mallorca")
-    (coordX 5500)
-    (coordY 5500)
+    (coordX 1100)
+    (coordY 1100)
     (distrito Noreste)
     (numero 42))
 
@@ -1324,8 +1324,8 @@
 ([ontologia_Class4] of  Localizacion
 
     (calle "Marques de Mulhacen")
-    (coordX 5500)
-    (coordY 500)
+    (coordX 1100)
+    (coordY 100)
     (distrito Sureste)
     (numero 31))
 
@@ -1333,6 +1333,240 @@
 
     (cercania cerca)
     (tipoServicio centroComercial))
+
+([ontologia_Class40000] of  Unifamiliar
+
+    (amueblada TRUE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class29]
+        [ontologia_Class30])
+    (localizacion [ontologia_Class10008])
+    (otrasCaracteristicas [ontologia_Class6])
+    (precio 600.0)
+    (superficie 80)
+    (terraza TRUE))
+
+([ontologia_Class40001] of  Unifamiliar
+
+    (amueblada TRUE)
+    (balcon TRUE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class30]
+        [ontologia_Class30]
+        [ontologia_Class29]
+        [ontologia_Class29])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class17])
+    (otrasCaracteristicas [ontologia_Class5])
+    (precio 1350.2)
+    (superficie 200)
+    (terraza TRUE))
+
+([ontologia_Class40003] of  Unifamiliar
+
+    (balcon FALSE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class30])
+    (localizacion [ontologia_Class11])
+    (otrasCaracteristicas [ontologia_Class5])
+    (precio 400.0)
+    (superficie 100)
+    (terraza FALSE))
+
+([ontologia_Class40004] of  Unifamiliar
+
+    (amueblada TRUE)
+    (balcon TRUE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class30]
+        [ontologia_Class30]
+        [ontologia_Class29]
+        [ontologia_Class30]
+        [ontologia_Class30])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class10028])
+    (otrasCaracteristicas [ontologia_Class9])
+    (precio 1900.0)
+    (superficie 150)
+    (terraza TRUE))
+
+([ontologia_Class40005] of  Unifamiliar
+
+    (amueblada TRUE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class29]
+        [ontologia_Class30])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class10004])
+    (otrasCaracteristicas [ontologia_Class10])
+    (precio 900.0)
+    (superficie 200))
+
+([ontologia_Class40006] of  Duplex
+
+    (amueblada TRUE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class30]
+        [ontologia_Class30])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class10001])
+    (otrasCaracteristicas [ontologia_Class9])
+    (piso Bajo)
+    (precio 500.0)
+    (puerta F)
+    (superficie 60))
+
+([ontologia_Class40007] of  Duplex
+
+    (amueblada TRUE)
+    (balcon TRUE)
+    (dormitorios
+        [ontologia_Class30]
+        [ontologia_Class30]
+        [ontologia_Class30]
+        [ontologia_Class29])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class16])
+    (otrasCaracteristicas [ontologia_Class9])
+    (piso Primero)
+    (precio 890.0)
+    (puerta E)
+    (superficie 120)
+    (terraza TRUE))
+
+([ontologia_Class40008] of  Duplex
+
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class30]
+        [ontologia_Class29])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class10020])
+    (otrasCaracteristicas [ontologia_Class6])
+    (piso Segundo)
+    (precio 1400.0)
+    (puerta D)
+    (superficie 140)
+    (terraza TRUE))
+
+([ontologia_Class40009] of  Duplex
+
+    (amueblada TRUE)
+    (balcon TRUE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class29]
+        [ontologia_Class29]
+        [ontologia_Class29])
+    (localizacion [ontologia_Class10015])
+    (otrasCaracteristicas [ontologia_Class8])
+    (piso Tercero)
+    (precio 1700.0)
+    (puerta C)
+    (superficie 200))
+
+([ontologia_Class40010] of  Duplex
+
+    (amueblada TRUE)
+    (balcon TRUE)
+    (dormitorios
+        [ontologia_Class30]
+        [ontologia_Class30]
+        [ontologia_Class29])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class10026])
+    (otrasCaracteristicas [ontologia_Class9])
+    (piso Cuarto)
+    (precio 1150.0)
+    (puerta B)
+    (superficie 120)
+    (terraza TRUE))
+
+([ontologia_Class40012] of  Piso
+
+    (amueblada TRUE)
+    (balcon TRUE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class30]
+        [ontologia_Class30]
+        [ontologia_Class29])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class10017])
+    (otrasCaracteristicas [ontologia_Class7])
+    (piso Quinto)
+    (precio 990.0)
+    (puerta A)
+    (superficie 100))
+
+([ontologia_Class40013] of  Piso
+
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class30])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class10011])
+    (otrasCaracteristicas [ontologia_Class5])
+    (piso Sexto)
+    (precio 450.0)
+    (puerta F)
+    (superficie 55)
+    (terraza TRUE))
+
+([ontologia_Class40014] of  Piso
+
+    (balcon TRUE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class29]
+        [ontologia_Class30])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class10021])
+    (otrasCaracteristicas [ontologia_Class6])
+    (piso Octavo)
+    (precio 345.0)
+    (puerta E)
+    (superficie 45))
+
+([ontologia_Class40015] of  Piso
+
+    (amueblada TRUE)
+    (balcon TRUE)
+    (dormitorios
+        [ontologia_Class29]
+        [ontologia_Class29]
+        [ontologia_Class29])
+    (electrodomesticos TRUE)
+    (localizacion [ontologia_Class14])
+    (otrasCaracteristicas [ontologia_Class7])
+    (piso Noveno)
+    (precio 900.0)
+    (puerta D)
+    (superficie 46)
+    (terraza TRUE))
+
+([ontologia_Class40016] of  Piso
+
+    (amueblada TRUE)
+    (balcon TRUE)
+    (dormitorios
+        [ontologia_Class30]
+        [ontologia_Class30]
+        [ontologia_Class30]
+        [ontologia_Class29])
+    (localizacion [ontologia_Class73])
+    (otrasCaracteristicas [ontologia_Class6])
+    (piso Atico)
+    (precio 670.0)
+    (puerta B)
+    (superficie 130)
+    (terraza TRUE))
 
 ([ontologia_Class42] of  RestriccionCercania
 
@@ -1519,8 +1753,8 @@
 ([ontologia_Class73] of  Localizacion
 
     (calle "Muntaner")
-    (coordX 1000)
-    (coordY 1000)
+    (coordX 200)
+    (coordY 200)
     (distrito Suroeste)
     (numero 8))
 

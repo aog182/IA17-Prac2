@@ -1,4 +1,4 @@
-; Sun Dec 17 19:46:20 CET 2017
+; Mon Dec 18 21:07:45 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -20,22 +20,22 @@
 ([BROWSER_SLOT_NAMES] of  Property_List
 
 	(properties
-		[ontologia_ProjectKB_Class10207]
-		[ontologia_ProjectKB_Class10208]
-		[ontologia_ProjectKB_Class10209]
-		[ontologia_ProjectKB_Class10210]
-		[ontologia_ProjectKB_Class10211]
-		[ontologia_ProjectKB_Class10212]
-		[ontologia_ProjectKB_Class10213]
-		[ontologia_ProjectKB_Class10214]
-		[ontologia_ProjectKB_Class10215]
-		[ontologia_ProjectKB_Class10216]
-		[ontologia_ProjectKB_Class10217]
-		[ontologia_ProjectKB_Class10218]
-		[ontologia_ProjectKB_Class10219]
-		[ontologia_ProjectKB_Class10220]
-		[ontologia_ProjectKB_Class10221]
-		[ontologia_ProjectKB_Class10222]))
+		[ontologia_ProjectKB_Class10168]
+		[ontologia_ProjectKB_Class10169]
+		[ontologia_ProjectKB_Class10170]
+		[ontologia_ProjectKB_Class10171]
+		[ontologia_ProjectKB_Class10172]
+		[ontologia_ProjectKB_Class10173]
+		[ontologia_ProjectKB_Class10174]
+		[ontologia_ProjectKB_Class10175]
+		[ontologia_ProjectKB_Class10176]
+		[ontologia_ProjectKB_Class10177]
+		[ontologia_ProjectKB_Class10178]
+		[ontologia_ProjectKB_Class10179]
+		[ontologia_ProjectKB_Class10180]
+		[ontologia_ProjectKB_Class10181]
+		[ontologia_ProjectKB_Class10182]
+		[ontologia_ProjectKB_Class10183]))
 
 ([CLSES_TAB] of  Widget
 
@@ -79,7 +79,7 @@
 	(is_hidden FALSE)
 	(widget_class_name "edu.stanford.smi.protege.widget.InstancesTab"))
 
-([KB_237861_Class3] of  Map
+([KB_557237_Class3] of  Map
 )
 
 ([KB_694844_Class0] of  String
@@ -90,9 +90,9 @@
 ([KB_694844_Class1] of  Map
 
 	(entries
-		[ontologia_ProjectKB_Class10223]
-		[ontologia_ProjectKB_Class10224]
-		[ontologia_ProjectKB_Class10225]))
+		[ontologia_ProjectKB_Class10184]
+		[ontologia_ProjectKB_Class10185]
+		[ontologia_ProjectKB_Class10186]))
 
 ([KB_694844_Class100] of  Property_List
 )
@@ -200,115 +200,101 @@
 ([ontologia_ProjectKB_Class10] of  Property_List
 )
 
-([ontologia_ProjectKB_Class10205] of  Widget
-
-	(height 60)
-	(is_hidden FALSE)
-	(name "ontologia_Class40003")
-	(property_list [ontologia_ProjectKB_Class10206])
-	(widget_class_name "edu.stanford.smi.protege.widget.TextFieldWidget")
-	(width 200)
-	(x 0)
-	(y 240))
-
-([ontologia_ProjectKB_Class10206] of  Property_List
-)
-
-([ontologia_ProjectKB_Class10207] of  String
+([ontologia_ProjectKB_Class10168] of  String
 
 	(name "Familia")
 	(string_value "identificacion"))
 
-([ontologia_ProjectKB_Class10208] of  String
+([ontologia_ProjectKB_Class10169] of  String
 
 	(name ":META-CLASS")
 	(string_value "%3ANAME"))
 
-([ontologia_ProjectKB_Class10209] of  String
+([ontologia_ProjectKB_Class10170] of  String
 
 	(name "Servicio")
 	(string_value "tipoServicio{+en+C%2F+}localizacion"))
 
-([ontologia_ProjectKB_Class10210] of  String
+([ontologia_ProjectKB_Class10171] of  String
 
 	(name "ParejaSinHijos")
 	(string_value "identificacion"))
 
-([ontologia_ProjectKB_Class10211] of  String
+([ontologia_ProjectKB_Class10172] of  String
 
 	(name "Solicitantes")
 	(string_value "identificacion"))
 
-([ontologia_ProjectKB_Class10212] of  String
+([ontologia_ProjectKB_Class10173] of  String
 
 	(name "Dormitorio")
 	(string_value "tipoDormitorio"))
 
-([ontologia_ProjectKB_Class10213] of  String
+([ontologia_ProjectKB_Class10174] of  String
 
 	(name "RestriccionPrecio")
 	(string_value "{de+}precioMin{+a+}precioMax{%2C+estricto+%3D+}precioMaxEstricto"))
 
-([ontologia_ProjectKB_Class10214] of  String
+([ontologia_ProjectKB_Class10175] of  String
 
 	(name "OtrasCaracteristicas")
 	(string_value "{aire+acondicionado+%3D+}aireAcondicionado{%2C+calefaccion+%3D+}calefaccion{%2C+garaje+%3D+}garaje{%2C+mascotas+permitidas+%3D+}mascotasPermitidas{%2C+piscina+%3D+}piscina{%2C+soleado+%3D+}soleado{%2C+vistas+%3D+}vistas"))
 
-([ontologia_ProjectKB_Class10215] of  String
+([ontologia_ProjectKB_Class10176] of  String
 
 	(name "RestriccionCercania")
 	(string_value "tipoServicio{+}cercania"))
 
-([ontologia_ProjectKB_Class10216] of  String
+([ontologia_ProjectKB_Class10177] of  String
 
 	(name ":PAL-CONSTRAINT")
 	(string_value "%3APAL-NAME"))
 
-([ontologia_ProjectKB_Class10217] of  String
+([ontologia_ProjectKB_Class10178] of  String
 
 	(name "Duplex")
 	(string_value "localizacion"))
 
-([ontologia_ProjectKB_Class10218] of  String
+([ontologia_ProjectKB_Class10179] of  String
 
 	(name "Localizacion")
 	(string_value "calle{%2C}numero"))
 
-([ontologia_ProjectKB_Class10219] of  String
+([ontologia_ProjectKB_Class10180] of  String
 
 	(name ":INSTANCE-ANNOTATION")
 	(string_value "%3AANNOTATION-TEXT"))
 
-([ontologia_ProjectKB_Class10220] of  String
+([ontologia_ProjectKB_Class10181] of  String
 
 	(name "ParejaHijosFuturo")
 	(string_value "identificacion"))
 
-([ontologia_ProjectKB_Class10221] of  String
+([ontologia_ProjectKB_Class10182] of  String
 
 	(name "RestriccionCaracteristicas")
 	(string_value "{hacitaci%C3%B3n+}dormitoriosDeseados"))
 
-([ontologia_ProjectKB_Class10222] of  String
+([ontologia_ProjectKB_Class10183] of  String
 
 	(name "Vivienda")
 	(string_value "localizacion"))
 
-([ontologia_ProjectKB_Class10223] of  Map_Entry
+([ontologia_ProjectKB_Class10184] of  Map_Entry
 
 	(key "suppress_instance_counting")
 	(key_class "java.lang.String")
 	(value "false")
 	(value_class "java.lang.String"))
 
-([ontologia_ProjectKB_Class10224] of  Map_Entry
+([ontologia_ProjectKB_Class10185] of  Map_Entry
 
 	(key "change_tracking_active")
 	(key_class "java.lang.String")
 	(value "false")
 	(value_class "java.lang.String"))
 
-([ontologia_ProjectKB_Class10225] of  Map_Entry
+([ontologia_ProjectKB_Class10186] of  Map_Entry
 
 	(key "add_name_on_instance_form")
 	(key_class "java.lang.String")
