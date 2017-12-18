@@ -1677,8 +1677,8 @@
     (bind ?xB (send ?localizacionB get-coordX))
     (bind ?yB (send ?localizacionB get-coordY))
     (bind ?dist (sqrt (+ (** (- ?xA ?xB) 2) (** (- ?yA ?yB) 2))))
-    (if (< ?dist 5000) then (bind ?distancia Cerca)
-    else (if (< ?dist 10000) then (bind ?distancia Media))
+    (if (< ?dist 500) then (bind ?distancia Cerca)
+    else (if (<= ?dist 1000) then (bind ?distancia Media))
     else (bind ?distancia Lejos))
     ?distancia
 )
@@ -2167,23 +2167,50 @@
     else (if (and (eq ?distMetro Lejos) (eq ?distBus Lejos)) then (send ?posRecm añadir-criterio-no-cumplido "Lejos de trabajo/estudios")))
 )
 
-(defrule filtrarParaGrupos "regla que valora una vivienda en funcion de si los residentes son un grupo"
+(defrule filtrarParaGruposTipoVivienda "regla que valora una vivienda en funcion del tipo de vivienda si los residentes son un grupo"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    ?viv <- (object (is-a Unifamiliar))
+    ?st <- (SolicitantesTemplate (tipo ?type))
+    (test (and (eq ?viv ?vivienda) (eq ?type Grupo)))
+    (not (rec_grupos))
+    =>
+    (send ?posRecm añadir-caracteristica-destacable "Adecuada para grupos")
+    (assert (rec_grupos))
+)
+
+(defrule filtrarParaGruposServicios "regla que valora una vivienda en funcion de los servicios cercanos si los residentes son un grupo"
     ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
     ?st <- (SolicitantesTemplate (tipo ?type))
     (test (eq ?type Grupo))
+    (not (rec_grupos))
     =>
     (bind ?distSuper (distancia-minima-servicio (send ?vivienda get-localizacion) supermercado))
     (if (eq ?distSuper Cerca) then (send ?posRecm añadir-caracteristica-destacable "Adecuada para grupos")
-    else (send ?posRecm añadir-criterio-no-cumplido "No adecuada para grupos")))
+    else (send ?posRecm añadir-criterio-no-cumplido "No adecuada para grupos"))
+    (assert (rec_grupos))
+)
 
-(defrule filtrarParaParejas "regla que valora una vivienda en funcion de si los residentes son una pareja/familia"
+(defrule filtrarParaParejasTipoVivienda "regla que valora una vivienda en funcion del tipo de vivienda si los residentes son una pareja/familia"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    ?viv <- (object (is-a Unifamiliar))
+    ?st <- (SolicitantesTemplate (tipo ?type))
+    (test (and (eq ?viv ?vivienda) (and (neq ?type Individuo) (neq ?type Grupo))))
+    (not (rec_pareja))
+    =>
+    (send ?posRecm añadir-caracteristica-destacable "Adecuada para familias/parejas")
+    (assert (rec_pareja))
+)
+
+(defrule filtrarParaParejasServicios "regla que valora una vivienda en funcion de los servicios cercanos si los residentes son una pareja/familia"
     ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
     ?st <- (SolicitantesTemplate (tipo ?type))
     (test (and (neq ?type Individuo) (neq ?type Grupo)))
+    (not (rec_pareja))
     =>
     (bind ?distHiper (distancia-minima-servicio (send ?vivienda get-localizacion) hipermercado))
     (if (eq ?distHiper Cerca) then (send ?posRecm añadir-caracteristica-destacable "Adecuada para familias/parejas")
     else (send ?posRecm añadir-criterio-no-cumplido "No adecuada para familias/parejas"))
+    (assert (rec_pareja))
 )
 
 (defrule filtrarParaMayores "regla que valora una vivienda en funcion de si hay algun residente mayor"
@@ -2222,17 +2249,43 @@
     else (send ?posRecm añadir-criterio-no-cumplido "No adecuada para hijos"))
 )
 
+(defrule filtrarPorPiso "regla que valora una vivienda en funcion del piso en que se ubica"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    ?viv <- (object (is-a ViviendaBloque) (piso ?piso))
+    (test (eq ?vivienda ?viv))
+    =>
+    (if (eq ?piso Atico) then (send ?posRecm añadir-caracteristica-destacable "Atico")
+    else (if (eq ?piso Bajo) then (send ?posRecm añadir-criterio-no-cumplido "Entresuelo")))
+)
+
+(defrule filtrarPorZonasVerdes "regla que valora una vivienda en funcion de la distancia a zonas verdes"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    (bind ?distZV (distancia-minima-servicio (send ?vivienda get-localizacion) zonaVerde))
+    (if (neq ?distZV Lejos) then (send ?posRecm añadir-caracteristica-destacable "Zonas verdes no muy alejadas")
+    else (send ?posRecm añadir-criterio-no-cumplido "Zonas verdes muy alejadas"))
+)
+
+(defrule filtrarPorCantidadServiciosCercanos "regla que valora una vivienda en funcion de la cantidad de servicios que hay cerca"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    =>
+    (bind ?cantServicios 0)
+    (bind ?localizacion (send ?vivienda get-localizacion))
+    (bind $?allServicios (find-all-instances((?inst Servicio)) TRUE))
+    (progn$ (?servicio $?allServicios)
+        (bind ?location (instance-address * (send ?servicio get-localizacion)))
+        (bind ?resDist (calcular-distancia ?localizacion ?location))
+        (if (eq ?resDist Cerca) then (bind ?cantServicios (+ ?cantServicios 1 ))))
+
+    (if (> ?cantServicios 5) then (send ?posRecm añadir-caracteristica-destacable "Zona animada")
+    else (if (< ?cantServicios 3) then (send ?posRecm añadir-criterio-no-cumplido "Pocos servicios alrededor")))
+)
+
 (defrule finfiltrado "regla para pasar al siguiente modulo"
     (nuevo_solicitante)
     => 
     (printout t crlf)
     (printout t "Filtrado completado." crlf)
-    (bind $?allRecomendaciones (find-all-instances((?inst Recomendacion)) TRUE))
-	(loop-for-count (?i 1 (length$ ?allRecomendaciones)) do
-		(bind ?recomendacion (nth$ ?i ?allRecomendaciones))
-        (send ?recomendacion print-criterios-no-cumplidos)
-        (send ?recomendacion print-caracteristicas-destacables)
-	)
     (focus recomendaciones)
 )
 
