@@ -1706,7 +1706,7 @@
 
 (defmessage-handler Recomendacion print-nombre primary()
     (printout t crlf)
-    (format t "Vivienda en la Calle %s" (instance-name ?self))
+    (format t "Vivienda en la Calle %s (%.2f euros)" (instance-name ?self) (send (send ?self get-vivienda) get-precio))
 )
 
 (defmessage-handler Recomendacion print-criterios-no-cumplidos primary()
