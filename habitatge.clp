@@ -2053,7 +2053,6 @@
     (bind ?dorms (send ?vivienda get-dormitorios))
     (bind ?numSimples 0)
     (bind ?numDobles 0)
-    ;;; MISSING PreferenciasDORMS
     (loop-for-count (?i 1 (length$ ?dorms)) do
         (bind ?dorm (instance-address * (nth$ ?i ?dorms)))
         (bind ?tipoDorm (send ?dorm get-tipoDormitorio))
@@ -2153,8 +2152,23 @@
     =>
     (bind ?distMetro (distancia-minima-servicio (send ?vivienda get-localizacion) paradaMetro))
     (bind ?distBus (distancia-minima-servicio (send ?vivienda get-localizacion) paradaBus))
-    (if (or (eq ?distMetro Cerca) (eq ?distBus Cerca)) then (send ?posRecm añadir-caracteristica-destacable "Cerca transporte/publico")
-    else (if (and (eq ?distMetro Lejos) (eq ?distBus Lejos)) then (send ?posRecm añadir-criterio-no-cumplido "Lejos de trabajo/estudios")))
+    (if (or (eq ?distMetro Cerca) (eq ?distBus Cerca)) then (send ?posRecm añadir-caracteristica-destacable "Cerca transporte publico")
+    else (if (and (eq ?distMetro Lejos) (eq ?distBus Lejos)) then (send ?posRecm añadir-criterio-no-cumplido "Lejos de transporte publico")))
+)
+
+(defrule filtrarPorCercaniaServicio "regla que valora una vivienda en funcion de las restricciones de servicios"
+    ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    ?prefCerc <- (PreferenciasCercania (cercania ?cercania) (tipoServicio ?tipoServicio))
+    (test (neq ?cercania indef))
+    =>
+    (bind ?distServicio (distancia-minima-servicio (send ?vivienda get-localizacion) ?tipoServicio))
+    (switch ?cercania
+        (case cerca then 
+            (if (neq ?distServicio Cerca) then (send ?posRecm añadir-criterio-no-cumplido (sym-cat "No " ?tipoServicio " cerca"))))
+        (case mediaDistancia then
+            (if (neq ?distServicio Media) then (send ?posRecm añadir-criterio-no-cumplido (sym-cat "No " ?tipoServicio " a media distancia"))))
+        (case lejos then
+            (if (neq ?distServicio Lejos) then (send ?posRecm añadir-criterio-no-cumplido (sym-cat "No " ?tipoServicio " lejos")))))
 )
 
 (defrule filtrarParaGruposTipoVivienda "regla que valora una vivienda en funcion del tipo de vivienda si los residentes son un grupo"
