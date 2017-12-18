@@ -1704,18 +1704,15 @@
 
 ;;; Mensajes a las clases 
 
-
-(defmessage-handler Recomendacion print-criterios-no-cumplidos primary()
+(defmessage-handler Recomendacion print-nombre primary()
     (printout t crlf)
     (format t "Vivienda en la Calle %s" (instance-name ?self))
-    (printout t crlf)
-    (printout t crlf)
-    (printout t "CRITERIOS NO CUMPLIDOS: " crlf)
+)
+
+(defmessage-handler Recomendacion print-criterios-no-cumplidos primary()
     (progn$ (?criterio ?self:criteriosNoCumplidos)
         (printout t "--> " ?criterio crlf)
     )
-    (printout t crlf)
-    (printout t "////////////////////////////////////////////" crlf)
 )
 
 (defmessage-handler Recomendacion añadir-criterio-no-cumplido primary(?restriccion)
@@ -1728,16 +1725,9 @@
 )
 
 (defmessage-handler Recomendacion print-caracteristicas-destacables primary()
-    (printout t crlf)
-    (format t "Vivienda en la Calle %s" (instance-name ?self))
-    (printout t crlf)
-    (printout t crlf)
-    (printout t "CARACTERISTICAS DESTACABLES: " crlf)
     (progn$ (?destacable ?self:caracteristicasDestacables)
         (printout t "--> " ?destacable crlf)
     )
-    (printout t crlf)
-    (printout t "////////////////////////////////////////////" crlf)
 )
 
 (defmessage-handler Recomendacion añadir-caracteristica-destacable primary(?caracteristica)
@@ -2309,7 +2299,6 @@
     (nuevo_solicitante)
     =>
     (bind ?recomendaciones (find-all-instances ((?inst Recomendacion)) TRUE))
-    (printout t (length$ ?recomendaciones) crlf)
     (if (eq (length$ ?recomendaciones) 0) then
         (printout t crlf)
         (printout t "------------------------------------------------------------------------" crlf)
@@ -2321,7 +2310,6 @@
         (printout t "------------------------------------------------------------------------" crlf)
         (printout t "|      VIVIENDAS QUE SE AJUSTAN A SUS NECESIDADES (DE MAS A MENOS)     |" crlf)
         (printout t "------------------------------------------------------------------------" crlf)
-        (printout t crlf)
         (assert (pintar_muyRecomendables))
     )
 )
@@ -2337,7 +2325,12 @@
     (bind ?recomendaciones (find-all-instances ((?inst Recomendacion)) TRUE))
     (progn$ (?var ?recomendaciones)
         (if (and (eq (length$ (send ?var get-criteriosNoCumplidos)) 0) (> (length$ (send ?var get-caracteristicasDestacables)) 0)) then
+            (send ?var print-nombre)
+            (printout t crlf)
+            (printout t "CARACTERISTICAS DESTACABLES: " crlf)
             (send ?var print-caracteristicas-destacables)
+            (printout t crlf)
+            (printout t "////////////////////////////////////////////" crlf)
             (send ?var delete)
         )
     )
@@ -2357,8 +2350,7 @@
     (bind ?recomendaciones (find-all-instances ((?inst Recomendacion)) TRUE))
     (progn$ (?var ?recomendaciones)
         (if (eq (length$ (send ?var get-criteriosNoCumplidos)) 0) then
-            (printout t crlf)
-            (format t "Vivienda en la calle %s" (instance-name ?var))
+            (send ?var print-nombre)
             (printout t crlf)
             (printout t "////////////////////////////////////////////" crlf)
             (send ?var delete)
@@ -2380,7 +2372,12 @@
     (bind ?recomendaciones (find-all-instances ((?inst Recomendacion)) TRUE))
     (progn$ (?var ?recomendaciones)
         (if (> (length$ (send ?var get-criteriosNoCumplidos)) 0) then
+            (send ?var print-nombre)
+            (printout t crlf)
+            (printout t "CRITERIOS NO CUMPLIDOS: " crlf)
             (send ?var print-criterios-no-cumplidos)
+            (printout t crlf)
+            (printout t "////////////////////////////////////////////" crlf)
             (send ?var delete)
         )
     )
