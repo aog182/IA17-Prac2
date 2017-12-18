@@ -1706,10 +1706,16 @@
 
 
 (defmessage-handler Recomendacion print-criterios-no-cumplidos primary()
-    (printout t "CRITERIOS NO CUMPLIDOS " (instance-name ?self) crlf)
+    (printout t crlf)
+    (format t "Vivienda en la Calle %s" (instance-name ?self))
+    (printout t crlf)
+    (printout t crlf)
+    (printout t "CRITERIOS NO CUMPLIDOS: " crlf)
     (progn$ (?criterio ?self:criteriosNoCumplidos)
-        (printout t "--> " ?criterio crlf))
-	(printout t "----------------------------------------------------- " crlf)
+        (printout t "--> " ?criterio crlf)
+    )
+    (printout t crlf)
+    (printout t "////////////////////////////////////////////" crlf)
 )
 
 (defmessage-handler Recomendacion añadir-criterio-no-cumplido primary(?restriccion)
@@ -1722,10 +1728,16 @@
 )
 
 (defmessage-handler Recomendacion print-caracteristicas-destacables primary()
-    (printout t "CARACTERISTICAS DESTACABLES " (instance-name ?self) crlf)
+    (printout t crlf)
+    (format t "Vivienda en la Calle %s" (instance-name ?self))
+    (printout t crlf)
+    (printout t crlf)
+    (printout t "CARACTERISTICAS DESTACABLES: " crlf)
     (progn$ (?destacable ?self:caracteristicasDestacables)
-        (printout t "--> " ?destacable crlf))
-	(printout t "----------------------------------------------------- " crlf)
+        (printout t "--> " ?destacable crlf)
+    )
+    (printout t crlf)
+    (printout t "////////////////////////////////////////////" crlf)
 )
 
 (defmessage-handler Recomendacion añadir-caracteristica-destacable primary(?caracteristica)
@@ -1928,21 +1940,6 @@
     )
     (assert (cercania_introducida))
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 (defrule finPreguntasAbstaccionDatos "regla para pasar al modulo siguiente"
     (nuevo_solicitante)
@@ -2236,4 +2233,108 @@
         (send ?recomendacion print-criterios-no-cumplidos)
         (send ?recomendacion print-caracteristicas-destacables)
 	)
+    (focus recomendaciones)
+)
+
+
+
+;;;------------------------------------------------------------------------------------------------------------------------------------------------------
+;;;----------               MODULO DE RECOMENDACIONES       ----------              MODULO DE RECOMENDACIONES       
+;;;------------------------------------------------------------------------------------------------------------------------------------------------------
+
+;; En este modulo se obtendran todas las solcuiones y se mostrara la solucion
+;; ordenadas por: muy recomendables, adecuadas, 
+
+(defmodule recomendaciones
+    (import MAIN ?ALL) 
+    (import inferencia ?ALL) 
+    (import filtrado ?ALL)
+    (export ?ALL)
+)
+
+(defrule pintarRecomendacionesVacio
+    (nuevo_solicitante)
+    =>
+    (bind ?recomendaciones (find-all-instances ((?inst Recomendacion)) TRUE))
+    (printout t (length$ ?recomendaciones) crlf)
+    (if (eq (length$ ?recomendaciones) 0) then
+        (printout t crlf)
+        (printout t "------------------------------------------------------------------------" crlf)
+        (printout t "| LO SENTIMOS, NO HAY NINGUNA VIVIENDA QUE SE AJUSTE A SUS NECESIDADES |" crlf)
+        (printout t "------------------------------------------------------------------------" crlf)
+        (printout t crlf)
+    else
+        (printout t crlf)
+        (printout t "------------------------------------------------------------------------" crlf)
+        (printout t "|      VIVIENDAS QUE SE AJUSTAN A SUS NECESIDADES (DE MAS A MENOS)     |" crlf)
+        (printout t "------------------------------------------------------------------------" crlf)
+        (printout t crlf)
+        (assert (pintar_muyRecomendables))
+    )
+)
+
+(defrule pintarMuyRecomendables
+    (nuevo_solicitante)
+    (pintar_muyRecomendables)
+    =>
+    (printout t crlf)
+    (printout t "-------------------------------" crlf)
+    (printout t "| Viviendas muy recomendables |:" crlf)
+    (printout t "-------------------------------" crlf)
+    (bind ?recomendaciones (find-all-instances ((?inst Recomendacion)) TRUE))
+    (progn$ (?var ?recomendaciones)
+        (if (and (eq (length$ (send ?var get-criteriosNoCumplidos)) 0) (> (length$ (send ?var get-caracteristicasDestacables)) 0)) then
+            (send ?var print-caracteristicas-destacables)
+            (send ?var delete)
+        )
+    )
+    (printout t "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" crlf)
+    (assert (pintar_adecuadas))
+)
+
+
+(defrule pintarAdecuadas
+    (nuevo_solicitante)
+    (pintar_adecuadas)
+    =>
+    (printout t crlf)
+    (printout t "-----------------------" crlf)
+    (printout t "| Viviendas adecuadas |:" crlf)
+    (printout t "-----------------------" crlf)
+    (bind ?recomendaciones (find-all-instances ((?inst Recomendacion)) TRUE))
+    (progn$ (?var ?recomendaciones)
+        (if (eq (length$ (send ?var get-criteriosNoCumplidos)) 0) then
+            (printout t crlf)
+            (format t "Vivienda en la calle %s" (instance-name ?var))
+            (printout t crlf)
+            (printout t "////////////////////////////////////////////" crlf)
+            (send ?var delete)
+        )
+    )
+    (printout t "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" crlf)
+    (assert (pintar_parcialmenteAdecuadas))
+)
+
+
+(defrule pintarParcialmenteAdecuadas
+    (nuevo_solicitante)
+    (pintar_parcialmenteAdecuadas)
+    =>
+    (printout t crlf)
+    (printout t "------------------------------------" crlf)
+    (printout t "| Viviendas parcialmente adecuadas |:" crlf)
+    (printout t "------------------------------------" crlf)
+    (bind ?recomendaciones (find-all-instances ((?inst Recomendacion)) TRUE))
+    (progn$ (?var ?recomendaciones)
+        (if (> (length$ (send ?var get-criteriosNoCumplidos)) 0) then
+            (send ?var print-criterios-no-cumplidos)
+            (send ?var delete)
+        )
+    )
+    (printout t crlf)
+    (printout t "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" crlf)
+    (printout t "+                                FIN                                +" crlf)
+    (printout t "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" crlf)
+    (printout t crlf)
+    (assert (FIN))
 )
