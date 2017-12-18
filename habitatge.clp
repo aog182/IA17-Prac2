@@ -1677,8 +1677,8 @@
     (bind ?xB (send ?localizacionB get-coordX))
     (bind ?yB (send ?localizacionB get-coordY))
     (bind ?dist (sqrt (+ (** (- ?xA ?xB) 2) (** (- ?yA ?yB) 2))))
-    (if (< ?dist 500) then (bind ?distancia Cerca)
-    else (if (<= ?dist 1000) then (bind ?distancia Media))
+    (if (< ?dist 2500) then (bind ?distancia Cerca)
+    else (if (<= ?dist 5000) then (bind ?distancia Media))
     else (bind ?distancia Lejos))
     ?distancia
 )
@@ -2149,6 +2149,8 @@
     ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
     ?st <- (SolicitantesTemplate (preferenciaTransportePublico ?prefTP))
     (test (eq ?prefTP TRUE))
+    (not (PreferenciasCercania (tipoServicio paradaMetro)))
+    (not (PreferenciasCercania (tipoServicio paradaBus)))
     =>
     (bind ?distMetro (distancia-minima-servicio (send ?vivienda get-localizacion) paradaMetro))
     (bind ?distBus (distancia-minima-servicio (send ?vivienda get-localizacion) paradaBus))
@@ -2187,6 +2189,7 @@
     ?st <- (SolicitantesTemplate (tipo ?type))
     (test (eq ?type Grupo))
     (not (rec_grupos))
+    (not (PreferenciasCercania (tipoServicio supermercado)))
     =>
     (bind ?distSuper (distancia-minima-servicio (send ?vivienda get-localizacion) supermercado))
     (if (eq ?distSuper Cerca) then (send ?posRecm añadir-caracteristica-destacable "Adecuada para grupos")
@@ -2210,6 +2213,7 @@
     ?st <- (SolicitantesTemplate (tipo ?type))
     (test (and (neq ?type Individuo) (neq ?type Grupo)))
     (not (rec_pareja))
+    (not (PreferenciasCercania (tipoServicio hipermercado)))
     =>
     (bind ?distHiper (distancia-minima-servicio (send ?vivienda get-localizacion) hipermercado))
     (if (eq ?distHiper Cerca) then (send ?posRecm añadir-caracteristica-destacable "Adecuada para familias/parejas")
@@ -2220,6 +2224,8 @@
 (defrule filtrarParaMayores "regla que valora una vivienda en funcion de si hay algun residente mayor"
     ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
     ?st <- (SolicitantesTemplate (ancianosACargo ?aac))
+    (not (PreferenciasCercania (tipoServicio supermercado)))
+    (not (PreferenciasCercania (tipoServicio centroSalud)))
     (test (> ?aac 0))
     =>
     (bind ?distSuper (distancia-minima-servicio (send ?vivienda get-localizacion) supermercado))
@@ -2231,6 +2237,7 @@
 (defrule filtrarParaJovenes "regla que valora una vivienda en funcion de si hay algun residente joven"
     ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
     ?st <- (SolicitantesTemplate (edades $?edades?))
+    (not (PreferenciasCercania (tipoServicio ocioNocturno)))
     =>
     (bind ?hasJovenes FALSE)
     (progn$ (?edad $?edades?)
@@ -2246,6 +2253,8 @@
     ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
     ?st <- (SolicitantesTemplate (tipo ?type))
     (test (or (eq ?type ParejaHijosFuturo) (eq ?type Familia)))
+    (not (PreferenciasCercania (tipoServicio colegio)))
+    (not (PreferenciasCercania (tipoServicio zonaVerde)))
     =>
     (bind ?distCole (distancia-minima-servicio (send ?vivienda get-localizacion) colegio))
     (bind ?distZV (distancia-minima-servicio (send ?vivienda get-localizacion) zonaVerde))
@@ -2264,6 +2273,7 @@
 
 (defrule filtrarPorZonasVerdes "regla que valora una vivienda en funcion de la distancia a zonas verdes"
     ?posRecm <- (object (is-a Recomendacion) (vivienda ?vivienda))
+    (not (PreferenciasCercania (tipoServicio zonaVerde)))
     =>
     (bind ?distZV (distancia-minima-servicio (send ?vivienda get-localizacion) zonaVerde))
     (if (neq ?distZV Lejos) then (send ?posRecm añadir-caracteristica-destacable "Zonas verdes no muy alejadas")
