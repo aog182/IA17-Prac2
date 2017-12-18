@@ -1,4 +1,4 @@
-; Thu Dec 14 13:26:50 CET 2017
+; Sun Dec 17 19:46:26 CET 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -10,16 +10,6 @@
 	(identificacion "grupo1")
 	(lugarTrabajaEstudia [ontologia_Class1])
 	(numeroPersonas 3)
-	(preferencias
-		[ontologia_Class70]
-		[ontologia_Class38]
-		[ontologia_Class38]
-		[ontologia_Class38]
-		[ontologia_Class60]
-		[ontologia_Class60]
-		[ontologia_Class54]
-		[ontologia_Class32]
-		[ontologia_Class35])
 	(preferenciaTransportePublico TRUE)
 	(trabajaEstudiaEnCiudad TRUE))
 
@@ -34,7 +24,8 @@
 ([ontologia_Class10] of  OtrasCaracteristicas
 
 	(calefaccion TRUE)
-	(mascotasPermitidas TRUE))
+	(mascotasPermitidas TRUE)
+	(soleado Tarde))
 
 ([ontologia_Class10000] of  Localizacion
 
@@ -360,13 +351,7 @@
 
 	(coche TRUE)
 	(edades 34)
-	(identificacion "individuo1")
-	(preferencias
-		[ontologia_Class28]
-		[ontologia_Class64]
-		[ontologia_Class57]
-		[ontologia_Class55]
-		[ontologia_Class39]))
+	(identificacion "individuo1"))
 
 ([ontologia_Class20000] of  Duplex
 
@@ -378,7 +363,7 @@
 	(electrodomesticos FALSE)
 	(localizacion [ontologia_Class10000])
 	(otrasCaracteristicas [ontologia_Class8])
-	(piso 1)
+	(piso Bajo)
 	(precio 700.0)
 	(puerta D)
 	(superficie 65)
@@ -390,13 +375,6 @@
 	(edades 28 27)
 	(identificacion "parejaSinHijos1")
 	(lugarTrabajaEstudia [ontologia_Class26])
-	(preferencias
-		[ontologia_Class28]
-		[ontologia_Class32]
-		[ontologia_Class35]
-		[ontologia_Class31]
-		[ontologia_Class52]
-		[ontologia_Class59])
 	(preferenciaTransportePublico TRUE)
 	(trabajaEstudiaEnCiudad TRUE))
 
@@ -427,7 +405,7 @@
 	(electrodomesticos TRUE)
 	(localizacion [ontologia_Class4])
 	(otrasCaracteristicas [ontologia_Class5])
-	(piso 5)
+	(piso Bajo)
 	(precio 800.0)
 	(puerta A)
 	(superficie 91)
@@ -448,7 +426,7 @@
 		[ontologia_Class30])
 	(localizacion [ontologia_Class10024])
 	(otrasCaracteristicas [ontologia_Class6])
-	(piso 2)
+	(piso Bajo)
 	(precio 1500.0)
 	(puerta E)
 	(superficie 160))
@@ -464,7 +442,7 @@
 	(electrodomesticos TRUE)
 	(localizacion [ontologia_Class10007])
 	(otrasCaracteristicas [ontologia_Class6])
-	(piso 3)
+	(piso Tercero)
 	(precio 750.0)
 	(puerta F)
 	(superficie 87))
@@ -478,7 +456,7 @@
 	(electrodomesticos TRUE)
 	(localizacion [ontologia_Class10018])
 	(otrasCaracteristicas [ontologia_Class9])
-	(piso 4)
+	(piso Primero)
 	(precio 550.0)
 	(puerta F)
 	(superficie 35))
@@ -493,7 +471,7 @@
 	(electrodomesticos TRUE)
 	(localizacion [ontologia_Class10014])
 	(otrasCaracteristicas [ontologia_Class10])
-	(piso 5)
+	(piso Segundo)
 	(precio 900.0)
 	(puerta A)
 	(superficie 90)
@@ -761,13 +739,6 @@
 	(coche TRUE)
 	(edades 31 26)
 	(identificacion "parejaHijosFuturo1")
-	(preferencias
-		[ontologia_Class28]
-		[ontologia_Class38]
-		[ontologia_Class32]
-		[ontologia_Class65]
-		[ontologia_Class50]
-		[ontologia_Class49])
 	(preferenciaTransportePublico TRUE))
 
 ([ontologia_Class38] of  RestriccionCaracteristicas
@@ -839,7 +810,7 @@
 	(garaje FALSE)
 	(mascotasPermitidas FALSE)
 	(piscina FALSE)
-	(soleado ma%C3%B1ana)
+	(soleado DiaCompleto)
 	(vistas FALSE))
 
 ([ontologia_Class50] of  RestriccionCercania
@@ -899,6 +870,7 @@
 	(garaje FALSE)
 	(mascotasPermitidas FALSE)
 	(piscina FALSE)
+	(soleado Poco)
 	(vistas FALSE))
 
 ([ontologia_Class60] of  RestriccionCercania
@@ -953,6 +925,7 @@
 	(calefaccion TRUE)
 	(garaje TRUE)
 	(mascotasPermitidas TRUE)
+	(soleado Manana)
 	(vistas TRUE))
 
 ([ontologia_Class70] of  RestriccionPrecio
@@ -969,16 +942,7 @@
 	(hijos 2)
 	(identificacion "familia1")
 	(lugarTrabajaEstudia [ontologia_Class73])
-	(preferencias
-		[ontologia_Class28]
-		[ontologia_Class28]
-		[ontologia_Class48]
-		[ontologia_Class44]
-		[ontologia_Class65]
-		[ontologia_Class39]
-		[ontologia_Class53]
-		[ontologia_Class69])
-	(tipoFamilia biparental)
+	(tipoFamilia Biparental)
 	(trabajaEstudiaEnCiudad TRUE))
 
 ([ontologia_Class73] of  Localizacion
@@ -994,6 +958,7 @@
 	(aireAcondicionado TRUE)
 	(calefaccion TRUE)
 	(piscina TRUE)
+	(soleado DiaCompleto)
 	(vistas TRUE))
 
 ([ontologia_Class9] of  OtrasCaracteristicas
@@ -1002,5 +967,5 @@
 	(calefaccion TRUE)
 	(garaje TRUE)
 	(mascotasPermitidas TRUE)
-	(soleado diaCompleto)
+	(soleado Manana)
 	(vistas FALSE))
